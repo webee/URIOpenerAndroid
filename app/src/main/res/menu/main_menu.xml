@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/test_result"
+        android:icon="@drawable/ic_assignment_return_white_24dp"
+        android:title="result"
+        app:showAsAction="always" />
+<item
+    android:id="@+id/toast"
+    android:icon="@drawable/ic_info_white_24dp"
+    android:title="toast"
+    app:showAsAction="always" />
+<item
+    android:icon="@drawable/ic_more_horiz_white_24dp"
+    android:title="more"
+    app:showAsAction="always" >
+    <menu>
+        <item
+            android:id="@+id/switch_user"
+            android:icon="@drawable/ic_account_circle_black_24dp"
+            android:title="切换用户"
+            app:showAsAction="always" />
+    </menu>
+</item>
+</menu>
