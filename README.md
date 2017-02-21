@@ -1,5 +1,21 @@
 # URIRouterAndroid
+[![Release](https://img.shields.io/github/release/webee/URIRouterAndroid.svg?label=maven version)](https://jitpack.io/#webee/URIRouterAndroid)
+
 android路由组件
+
+[https://jitpack.io/#webee/URIRouterAndroid](https://jitpack.io/#webee/URIRouterAndroid)
+
+To install the library add:
+
+   ```gradle
+   repositories {
+        jcenter()
+        maven { url "https://jitpack.io" }
+   }
+   dependencies {
+         compile 'com.github.webee:URIRouterAndroid:v0.1.0'
+   }
+   ```
 
 ## 全局配置
 ```java
