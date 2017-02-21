@@ -82,13 +82,15 @@ android路由组件
 ```
 
 ## uri示例
-// 其中路径参数和queryString默认为字符串，可由PathParams和QueryParams中间件处理成具体类型
-https://hyperwood.com/test/?name=webee&ageTint=28
-hyperwood:///test/
-https://hyperwood.com/user/webee/28/?name=vivian&name=xiaoee&ageTint=27
-hyperwood:///user/webee/28/
-https://hyperwood.com/user/xxx/
-hyperwood:///user/xxx/
-hyperwood:///xxxx/a/
-hyperwood:///xxxx/a/b/
+```
+    // 其中路径参数和queryString默认为字符串，可由PathParams和QueryParams中间件处理成具体类型
+
+    https://hyperwood.com/test/?name=webee&ageTint=28
+    hyperwood:///test/
+    https://hyperwood.com/user/webee/28/?name=vivian&name=xiaoee&ageTint=27
+    hyperwood:///user/webee/28/
+    https://hyperwood.com/user/xxx/
+    hyperwood:///user/xxx/
+    hyperwood:///xxxx/a/
+    hyperwood:///xxxx/a/b/
 ```
