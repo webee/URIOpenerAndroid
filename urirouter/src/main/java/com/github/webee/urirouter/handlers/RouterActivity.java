@@ -8,6 +8,7 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 
+import com.github.webee.urirouter.core.Data;
 import com.github.webee.urirouter.core.URIRouters;
 
 import java.util.HashSet;
@@ -15,10 +16,15 @@ import java.util.Set;
 
 public class RouterActivity extends Activity {
     public static final Set<String> WEB_SCHEMES = new HashSet<>();
+    private static Data ctxData;
 
     static {
         WEB_SCHEMES.add("http");
         WEB_SCHEMES.add("https");
+    }
+
+    public static void setCtxData(Data data) {
+        ctxData = data;
     }
 
     @Override
@@ -29,7 +35,8 @@ public class RouterActivity extends Activity {
         if (Intent.ACTION_VIEW.equals(intent.getAction())) {
             Uri uri = intent.getData();
             Bundle extras = intent.getExtras();
-            if (!URIRouters.open(this, uri, null, extras)) {
+
+            if (!URIRouters.open(this, uri, ctxData, extras)) {
                 if (WEB_SCHEMES.contains(uri.getScheme())) {
                     Intent i = new Intent(Intent.ACTION_VIEW, uri);
                     if (extras != null) {
