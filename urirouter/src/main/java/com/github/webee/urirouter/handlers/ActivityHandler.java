@@ -112,6 +112,13 @@ public class ActivityHandler implements Handler {
             return this;
         }
 
+        public CtxDataBuilder withoutFlags(int ...flags) {
+            for (int f : flags) {
+                this.flags &= ~f;
+            }
+            return this;
+        }
+
         public CtxDataBuilder withIntentProcessor(IntentProcessor processor) {
             intentProcessor = processor;
             return this;

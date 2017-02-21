@@ -1,7 +1,6 @@
 package com.github.webee.urirouter.middlewares;
 
 import com.github.webee.urirouter.core.Context;
-import com.github.webee.urirouter.core.Data;
 import com.github.webee.urirouter.core.Handler;
 import com.github.webee.urirouter.core.Middleware;
 
@@ -9,11 +8,11 @@ import com.github.webee.urirouter.core.Middleware;
  * Created by webee on 17/2/22.
  */
 
-public class CtxDataMiddleware implements Middleware {
-    private Data ctxData;
+public class HandleCtxMiddleware implements Middleware {
+    private Handler handler;
 
-    public CtxDataMiddleware(Data data) {
-        ctxData = data;
+    public HandleCtxMiddleware(Handler handler) {
+        this.handler = handler;
     }
 
     @Override
@@ -21,8 +20,8 @@ public class CtxDataMiddleware implements Middleware {
         return new Handler() {
             @Override
             public void handle(Context ctx) {
-                if (ctxData != null) {
-                    ctx.data.putAll(ctxData);
+                if (handler != null) {
+                    handler.handle(ctx);
                 }
                 next.handle(ctx);
             }

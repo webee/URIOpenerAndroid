@@ -5,12 +5,13 @@ import android.content.Intent;
 import android.widget.Toast;
 
 import com.github.webee.urirouter.core.Context;
+import com.github.webee.urirouter.core.Data;
 import com.github.webee.urirouter.core.Handler;
 import com.github.webee.urirouter.core.Middleware;
 import com.github.webee.urirouter.core.Router;
 import com.github.webee.urirouter.core.URIRouters;
 import com.github.webee.urirouter.handlers.ActivityHandler;
-import com.github.webee.urirouter.middlewares.CtxDataMiddleware;
+import com.github.webee.urirouter.middlewares.HandleCtxMiddleware;
 import com.github.webee.urirouter.middlewares.LogMiddleware;
 import com.github.webee.urirouter.middlewares.PathParamsMiddleware;
 import com.github.webee.urirouter.middlewares.QueryParamsMiddleware;
@@ -29,7 +30,14 @@ public class MainApplication extends Application {
         root.use(new LogMiddleware(),
                 new PathParamsMiddleware(),
                 new QueryParamsMiddleware(),
-                new CtxDataMiddleware(ActivityHandler.ctxData().withFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT).build()));
+                new HandleCtxMiddleware(new Handler() {
+                    @Override
+                    public void handle(Context ctx) {
+                        Integer flags = ctx.data.get(ActivityHandler.DATA_FLAGS);
+                        Data data = ActivityHandler.ctxData().withFlags(flags, Intent.FLAG_ACTIVITY_REORDER_TO_FRONT).build();
+                        ctx.data.putAll(data);
+                    }
+                }));
 
         root.add("/", ActivityHandler.create(MainActivity.class));
         root.add("/login/", ActivityHandler.create(LoginActivity.class));
