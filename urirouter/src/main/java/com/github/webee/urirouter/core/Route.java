@@ -11,36 +11,44 @@ import java.util.List;
 public class Route {
     public List<Param> pathParams = new LinkedList<>();
     public Handler handler;
+    private boolean finalized = false;
 
-    private Route(Handler handler, Param ...pathParams) {
+    private Route(Handler handler, Param... pathParams) {
         this.handler = handler;
         this.pathParams.addAll(Arrays.asList(pathParams));
     }
 
-    private Route(Route route, Param ...pathParams) {
+    private Route(Route route, Param... pathParams) {
         this(route.handler, pathParams);
         this.pathParams.addAll(route.pathParams);
     }
 
-    public Route applyMiddlewares(Middleware ...middlewares) {
+    public void setFinalized() {
+        finalized = true;
+    }
+
+    public Route applyMiddlewares(Middleware... middlewares) {
         return applyMiddlewares(Arrays.asList(middlewares));
     }
 
     public Route applyMiddlewares(List<Middleware> middlewares) {
-        for (int i = middlewares.size() - 1; i >= 0; i--) {
-            handler = middlewares.get(i).process(handler);
+        if (!finalized) {
+            for (int i = middlewares.size() - 1; i >= 0; i--) {
+                handler = middlewares.get(i).process(handler);
+            }
         }
+        // 路由生成已经结束
         return this;
     }
 
-    public static Route create(Handler handler, Param ...pathParams) {
+    public static Route create(Handler handler, Param... pathParams) {
         if (handler == null) {
             return null;
         }
         return new Route(handler, pathParams);
     }
 
-    public static Route create(Route route, Param ...pathParams) {
+    public static Route create(Route route, Param... pathParams) {
         if (route == null) {
             return null;
         }

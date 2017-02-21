@@ -45,8 +45,8 @@ public class ActivityHandler implements Handler {
         this.cls = cls;
     }
 
-    public static Builder ctxData() {
-        return new Builder();
+    public static CtxDataBuilder ctxData() {
+        return new CtxDataBuilder();
     }
 
     @Override
@@ -84,13 +84,13 @@ public class ActivityHandler implements Handler {
         return ctxData.containsKey(DATA_REQUEST_CODE);
     }
 
-    public static class Builder {
+    public static class CtxDataBuilder {
         Bundle options;
         Integer requestCode;
         int flags = 0;
         IntentProcessor intentProcessor;
 
-        public Builder withOptions(Bundle data) {
+        public CtxDataBuilder withOptions(Bundle data) {
             if (data != null) {
                 if (options == null) {
                     options = new Bundle();
@@ -100,19 +100,19 @@ public class ActivityHandler implements Handler {
             return this;
         }
 
-        public Builder withRequestCode(int code) {
+        public CtxDataBuilder withRequestCode(int code) {
             requestCode = code;
             return this;
         }
 
-        public Builder withFlags(int ...flags) {
+        public CtxDataBuilder withFlags(int ...flags) {
             for (int f : flags) {
                 this.flags |= f;
             }
             return this;
         }
 
-        public Builder withIntentProcessor(IntentProcessor processor) {
+        public CtxDataBuilder withIntentProcessor(IntentProcessor processor) {
             intentProcessor = processor;
             return this;
         }

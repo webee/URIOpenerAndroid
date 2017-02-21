@@ -45,7 +45,8 @@
         <activity android:name=".UserActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".ResultActivity" />
-        <activity android:name=".DumpRequestActivity"></activity>
+        <activity android:name=".DumpRequestActivity" />
+        <activity android:name=".NotImplementedActivity"></activity>
     </application>
 
 </manifest>

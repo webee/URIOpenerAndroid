@@ -1,6 +1,7 @@
 package com.github.webee.urirouter.test;
 
 import android.app.Application;
+import android.content.Intent;
 import android.widget.Toast;
 
 import com.github.webee.urirouter.core.Context;
@@ -9,6 +10,7 @@ import com.github.webee.urirouter.core.Middleware;
 import com.github.webee.urirouter.core.Router;
 import com.github.webee.urirouter.core.URIRouters;
 import com.github.webee.urirouter.handlers.ActivityHandler;
+import com.github.webee.urirouter.middlewares.CtxDataMiddleware;
 import com.github.webee.urirouter.middlewares.LogMiddleware;
 import com.github.webee.urirouter.middlewares.PathParamsMiddleware;
 import com.github.webee.urirouter.middlewares.QueryParamsMiddleware;
@@ -26,11 +28,12 @@ public class MainApplication extends Application {
         Router root = URIRouters.root;
         root.use(new LogMiddleware(),
                 new PathParamsMiddleware(),
-                new QueryParamsMiddleware());
+                new QueryParamsMiddleware(),
+                new CtxDataMiddleware(ActivityHandler.ctxData().withFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT).build()));
 
         root.add("/", ActivityHandler.create(MainActivity.class));
         root.add("/login/", ActivityHandler.create(LoginActivity.class));
-        root.add("/xxxx/*", ActivityHandler.create(TestActivity.class));
+        root.add("/xxxx/*", ActivityHandler.create(NotImplementedActivity.class));
 
         // user router.
         Router userRouter = root.mount("/user");
@@ -40,7 +43,7 @@ public class MainApplication extends Application {
         userRouter.add("/*", ActivityHandler.create(TestActivity.class));
 
         // test router.
-        Router testRouter = root.mount("/test");
+        Router testRouter = root.mount("/test", true);
         testRouter.add("/", ActivityHandler.create(TestActivity.class));
         testRouter.add("/result/", ActivityHandler.create(ResultActivity.class), loginMiddleware);
         testRouter.add("/toast", new Handler() {

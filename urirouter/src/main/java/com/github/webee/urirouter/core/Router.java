@@ -17,6 +17,9 @@ public class Router {
     public static final String PARAM_SEGMENT_PREFIX = ":";
     public static final String ANY_URI_PREFIX = "*";
 
+    // 自治，不受上级中间件的影响
+    private boolean autonomy = false;
+
     private List<Middleware> middlewares = new LinkedList<>();
     private Handler handler;
     private Map<String, Node> staticNodes = new HashMap<>();
@@ -24,6 +27,10 @@ public class Router {
     private Node anyNode;
 
     public Router() {
+    }
+
+    public Router(boolean autonomy) {
+        this.autonomy = autonomy;
     }
 
     public Route find(String path) {
@@ -55,6 +62,10 @@ public class Router {
 
         if (route != null) {
             route.applyMiddlewares(middlewares);
+            if (autonomy) {
+                // 由于是自治，路由到此生成结束
+                route.setFinalized();
+            }
         }
 
         return route;
@@ -128,10 +139,14 @@ public class Router {
         return node;
     }
 
-    public Router mount(String path) {
-        Router router = new Router();
+    public Router mount(String path, boolean autonomy) {
+        Router router = new Router(autonomy);
         mount(path, router);
         return router;
+    }
+
+    public Router mount(String path) {
+        return mount(path, false);
     }
 
     public void mount(String path, Router router) {
