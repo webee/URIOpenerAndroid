@@ -18,11 +18,15 @@ public final class URIRouters {
         return open(context, uri, null, null);
     }
 
-    public static boolean open(android.content.Context context, String path, Bundle ctxData, Bundle reqData) {
+    public static boolean open(android.content.Context context, String path, Data ctxData) {
+        return open(context, Uri.parse(path), ctxData, null);
+    }
+
+    public static boolean open(android.content.Context context, String path, Data ctxData, Bundle reqData) {
         return open(context, Uri.parse(path), ctxData, reqData);
     }
 
-    public static boolean open(android.content.Context context, Uri uri, Bundle ctxData, Bundle reqData) {
+    public static boolean open(android.content.Context context, Uri uri, Data ctxData, Bundle reqData) {
         Route route = root.find(uri.getPath());
         if (route != null) {
             Request request = new Request(uri, route.pathParams);
@@ -40,7 +44,7 @@ public final class URIRouters {
         return false;
     }
 
-    public static boolean open(android.content.Context context, Route route, Bundle ctxData, Bundle reqData) {
+    public static boolean open(android.content.Context context, Route route, Data ctxData, Bundle reqData) {
         Request request = new Request(route.pathParams);
         if (reqData != null) {
             request.data.putAll(reqData);
@@ -70,7 +74,7 @@ public final class URIRouters {
         private android.content.Context context;
         private Uri uri;
         private Route route;
-        private Bundle ctxData;
+        private Data ctxData;
         private Bundle reqData;
 
         Builder(Uri uri) {
@@ -86,10 +90,10 @@ public final class URIRouters {
             return this;
         }
 
-        public Builder withCtxData(Bundle ctxData) {
+        public Builder withCtxData(Data ctxData) {
             if (ctxData != null) {
                 if (this.ctxData == null) {
-                    this.ctxData = new Bundle();
+                    this.ctxData = new Data();
                 }
                 this.ctxData.putAll(ctxData);
             }

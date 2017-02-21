@@ -37,7 +37,7 @@ public class LoginMiddleware implements Middleware {
                     // 跳转到登录
                     Bundle data = new Bundle();
                     data.putParcelable(ProxyActivity.EXTRA_REFERRER, ctx.request.uri);
-                    data.putBundle(ProxyActivity.EXTRA_REFERRER_CTX_DATA, ctx.data);
+                    data.putBundle(ProxyActivity.EXTRA_REFERRER_CTX_DATA, ctx.data.bundle);
                     data.putBundle(ProxyActivity.EXTRA_REFERRER_REQ_DATA, ctx.request.data);
 
                     data.putParcelable(ProxyActivity.EXTRA_TARGET, Uri.parse(loginPath));

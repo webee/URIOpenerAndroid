@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import com.github.webee.urirouter.core.Data;
 import com.github.webee.urirouter.core.URIRouters;
 
 public class ProxyActivity extends Activity {
@@ -21,13 +22,8 @@ public class ProxyActivity extends Activity {
 
     // referrer
     private Uri referrer;
-    private Bundle referrerCtxData;
+    private Data referrerCtxData;
     private Bundle referrerReqData;
-
-    // target
-    private Uri target;
-    private Bundle targetCtxData;
-    private Bundle targetReqData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,16 +31,16 @@ public class ProxyActivity extends Activity {
 
         Intent intent = getIntent();
         referrer = intent.getParcelableExtra(EXTRA_REFERRER);
-        referrerCtxData = intent.getBundleExtra(EXTRA_REFERRER_CTX_DATA);
+        referrerCtxData = new Data(intent.getBundleExtra(EXTRA_REFERRER_CTX_DATA));
         referrerReqData = intent.getBundleExtra(EXTRA_REFERRER_REQ_DATA);
 
-        target = intent.getParcelableExtra(EXTRA_TARGET);
-        targetCtxData = intent.getBundleExtra(EXTRA_TARGET_CTX_DATA);
-        targetReqData = intent.getBundleExtra(EXTRA_TARGET_REQ_DATA);
+        Uri target = intent.getParcelableExtra(EXTRA_TARGET);
+        Data targetCtxData = new Data(intent.getBundleExtra(EXTRA_TARGET_CTX_DATA));
+        Bundle targetReqData = intent.getBundleExtra(EXTRA_TARGET_REQ_DATA);
         URIRouters.route(target)
                 .withContext(this)
                 .withCtxData(targetCtxData)
-                .withCtxData(ActivityHandler.getRequestForResultData(TARGET_REQ_CODE, null))
+                .withCtxData(ActivityHandler.ctxData().withRequestCode(TARGET_REQ_CODE).build())
                 .withReqData(targetReqData)
                 .open();
     }
@@ -57,7 +53,7 @@ public class ProxyActivity extends Activity {
                     URIRouters.route(referrer)
                             .withContext(this)
                             .withCtxData(referrerCtxData)
-                            .withCtxData(ActivityHandler.getRequestForResultData(REFERRER_REQ_CODE, null))
+                            .withCtxData(ActivityHandler.ctxData().withRequestCode(REFERRER_REQ_CODE).build())
                             .withReqData(referrerReqData)
                             .open();
                 } else {

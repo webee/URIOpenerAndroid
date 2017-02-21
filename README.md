@@ -13,7 +13,7 @@ To install the library add:
         maven { url "https://jitpack.io" }
    }
    dependencies {
-         compile 'com.github.webee:URIRouterAndroid:v0.1.2'
+         compile 'com.github.webee:URIRouterAndroid:v0.1.5'
    }
    ```
 

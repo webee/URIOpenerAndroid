@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 
+import com.github.webee.urirouter.core.Data;
 import com.github.webee.urirouter.core.URIRouters;
 import com.github.webee.urirouter.handlers.ProxyActivity;
 
@@ -21,7 +22,7 @@ public class LoginActivity extends AppCompatActivity {
     public static final String KEY_IS_LOGIN = "is_login";
 
     private Uri next;
-    private Bundle nextCtxData;
+    private Data nextCtxData;
     private Bundle nextReqData;
 
     @Override
@@ -32,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         next = intent.getParcelableExtra(EXTRA_NEXT);
-        nextCtxData = intent.getBundleExtra(EXTRA_NEXT_CTX_DATA);
+        nextCtxData = new Data(intent.getBundleExtra(EXTRA_NEXT_CTX_DATA));
         nextReqData = intent.getBundleExtra(EXTRA_NEXT_REQ_DATA);
     }
 

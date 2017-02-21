@@ -49,7 +49,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.test_result:
-                URIRouters.open(this, "/test/result/", ActivityHandler.getRequestForResultData(1, null), null);
+                URIRouters.open(this, "/test/result/",
+                        ActivityHandler.ctxData()
+                                .withRequestCode(1)
+                                .build());
                 return true;
             case R.id.toast:
                 URIRouters.open(this, "/test/toast");

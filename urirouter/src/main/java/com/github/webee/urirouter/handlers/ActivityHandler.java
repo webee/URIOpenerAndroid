@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.github.webee.urirouter.core.Context;
+import com.github.webee.urirouter.core.Data;
 import com.github.webee.urirouter.core.Handler;
 import com.github.webee.urirouter.core.Param;
 import com.github.webee.urirouter.core.Request;
@@ -22,6 +23,8 @@ import static com.github.webee.urirouter.core.Request.EXTRA_URI;
 public class ActivityHandler implements Handler {
     public static final String DATA_OPTIONS = ActivityHandler.class.getName() + ".options";
     public static final String DATA_REQUEST_CODE = ActivityHandler.class.getName() + ".request_code";
+    public static final String DATA_FLAGS = ActivityHandler.class.getName() + ".flags";
+    public static final String DATA_INTENT_PROCESSOR = ActivityHandler.class.getName() + ".intent_processor";
     private static final Map<Class<? extends Activity>, Handler> handlers = new HashMap<>();
     private final Class<? extends Activity> cls;
 
@@ -42,17 +45,8 @@ public class ActivityHandler implements Handler {
         this.cls = cls;
     }
 
-    public static Bundle getRequestData(Bundle options) {
-        Bundle data = new Bundle();
-        data.putBundle(DATA_OPTIONS, options);
-        return data;
-    }
-
-    public static Bundle getRequestForResultData(int requestCode, Bundle options) {
-        Bundle data = new Bundle();
-        data.putInt(DATA_REQUEST_CODE, requestCode);
-        data.putBundle(DATA_OPTIONS, options);
-        return data;
+    public static Builder ctxData() {
+        return new Builder();
     }
 
     @Override
@@ -60,14 +54,25 @@ public class ActivityHandler implements Handler {
         android.content.Context context = ctx.context;
         Intent intent = new Intent(context, cls);
 
-        Bundle options = ctx.data.getBundle(DATA_OPTIONS);
-        Request request = ctx.request;
+        Bundle options = ctx.data.get(DATA_OPTIONS);
 
+        Request request = ctx.request;
         intent.putExtra(EXTRA_URI, request.uri);
         intent.putExtras(request.data);
+
+        if (ctx.data.containsKey(DATA_FLAGS)) {
+            int flags = ctx.data.get(DATA_FLAGS);
+            intent.setFlags(flags);
+        }
+
+        IntentProcessor intentProcessor = ctx.data.get(DATA_INTENT_PROCESSOR);
+        if (intentProcessor != null) {
+            intent = intentProcessor.process(intent);
+        }
+
         if (ctx.data.containsKey(DATA_REQUEST_CODE)) {
             // request for result.
-            int requestCode = ctx.data.getInt(DATA_REQUEST_CODE);
+            int requestCode = ctx.data.get(DATA_REQUEST_CODE);
 
             ((Activity)context).startActivityForResult(intent, requestCode, options);
         } else {
@@ -75,7 +80,66 @@ public class ActivityHandler implements Handler {
         }
     }
 
-    public static boolean isRequestForResult(Bundle ctxData) {
+    public static boolean isRequestForResult(Data ctxData) {
         return ctxData.containsKey(DATA_REQUEST_CODE);
+    }
+
+    public static class Builder {
+        Bundle options;
+        Integer requestCode;
+        int flags = 0;
+        IntentProcessor intentProcessor;
+
+        public Builder withOptions(Bundle data) {
+            if (data != null) {
+                if (options == null) {
+                    options = new Bundle();
+                }
+                options.putAll(data);
+            }
+            return this;
+        }
+
+        public Builder withRequestCode(int code) {
+            requestCode = code;
+            return this;
+        }
+
+        public Builder withFlags(int ...flags) {
+            for (int f : flags) {
+                this.flags |= f;
+            }
+            return this;
+        }
+
+        public Builder withIntentProcessor(IntentProcessor processor) {
+            intentProcessor = processor;
+            return this;
+        }
+
+        public Data build() {
+            if (options == null && requestCode == null && flags == 0 && intentProcessor == null) {
+                return null;
+            }
+
+            Data data = new Data();
+            if (options != null) {
+                data.bundle.putBundle(DATA_OPTIONS, options);
+            }
+
+            if (requestCode != null) {
+                data.bundle.putInt(DATA_REQUEST_CODE, requestCode);
+            }
+
+            if (flags > 0) {
+                data.bundle.putInt(DATA_FLAGS, flags);
+            }
+
+            if (intentProcessor != null) {
+                data.put(DATA_INTENT_PROCESSOR, intentProcessor);
+            }
+
+            return data;
+        }
     }
 }
