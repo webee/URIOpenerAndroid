@@ -51,7 +51,7 @@ To install the library add:
 ## 使用
 ```java
     // 1.
-    URIRouters.open(this, "/test/result/", ActivityHandler.getRequestForResultData(1, null), null);
+    URIRouters.open(this, "/test/result/", ActivityHandler.ctxData().withRequestCode(1).build(), null);
     
     // 2.
     URIRouters.open(this, "/test/toast");
