@@ -65,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
 
                 Bundle reqData = new Bundle();
                 reqData.putParcelable(LoginActivity.EXTRA_NEXT, Uri.parse("/"));
+                reqData.putBundle(LoginActivity.EXTRA_NEXT_CTX_DATA,
+                        ActivityHandler.ctxData().withFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT).build().bundle);
                 URIRouters.open(this, "/login/", null, reqData);
                 //finish();
                 return true;
