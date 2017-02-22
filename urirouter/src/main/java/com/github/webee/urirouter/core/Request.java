@@ -22,8 +22,4 @@ public class Request {
         this.uri = uri;
         this.pathParams = pathParams;
     }
-
-    public Request(List<Param> pathParams) {
-        this(null, pathParams);
-    }
 }

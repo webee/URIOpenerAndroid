@@ -97,6 +97,7 @@ public class ActivityHandler implements Handler {
         IntentProcessor intentProcessor;
 
         public CtxDataBuilder() {
+            data = new Data();
         }
 
         public CtxDataBuilder(Data data) {

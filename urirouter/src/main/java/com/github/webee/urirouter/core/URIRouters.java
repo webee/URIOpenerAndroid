@@ -27,7 +27,14 @@ public final class URIRouters {
     }
 
     public static boolean open(android.content.Context context, Uri uri, Data ctxData, Bundle reqData) {
-        Route route = root.find(uri.getPath());
+        return open(context, uri, root.find(uri.getPath()), ctxData, reqData);
+    }
+
+    public static boolean open(android.content.Context context, Route route, Data ctxData, Bundle reqData) {
+        return open(context, null, route, ctxData, reqData);
+    }
+
+    public static boolean open(android.content.Context context, Uri uri, Route route, Data ctxData, Bundle reqData) {
         if (route != null) {
             Request request = new Request(uri, route.pathParams);
             if (reqData != null) {
@@ -42,20 +49,6 @@ public final class URIRouters {
             return true;
         }
         return false;
-    }
-
-    public static boolean open(android.content.Context context, Route route, Data ctxData, Bundle reqData) {
-        Request request = new Request(route.pathParams);
-        if (reqData != null) {
-            request.data.putAll(reqData);
-        }
-
-        Context ctx = new Context(context, request, null);
-        if (ctxData != null) {
-            ctx.data.putAll(ctxData);
-        }
-        route.handler.handle(ctx);
-        return true;
     }
 
     public static Builder route(String path) {
