@@ -1,9 +1,7 @@
-package com.github.webee.urirouter.test.middlewares;
+package com.github.webee.urirouter.middlewares;
 
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.github.webee.urirouter.core.Context;
@@ -12,7 +10,6 @@ import com.github.webee.urirouter.core.Middleware;
 import com.github.webee.urirouter.core.URIRouters;
 import com.github.webee.urirouter.handlers.ActivityHandler;
 import com.github.webee.urirouter.handlers.ProxyActivity;
-import com.github.webee.urirouter.test.LoginActivity;
 
 /**
  * Created by webee on 17/2/20.
@@ -20,9 +17,11 @@ import com.github.webee.urirouter.test.LoginActivity;
 
 public class LoginMiddleware implements Middleware {
     private String loginPath;
+    private IsLoginChecker isLoginChecker;
 
-    public LoginMiddleware(String loginPath) {
+    public LoginMiddleware(String loginPath, IsLoginChecker isLoginChecker) {
         this.loginPath = loginPath;
+        this.isLoginChecker = isLoginChecker;
     }
 
     @Override
@@ -30,9 +29,7 @@ public class LoginMiddleware implements Middleware {
         return new Handler() {
             @Override
             public void handle(Context ctx) {
-                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(ctx.context);
-                boolean isLogin = sharedPref.getBoolean(LoginActivity.KEY_IS_LOGIN, false);
-                if (!isLogin) {
+                if (!isLoginChecker.check(ctx.context)) {
                     Log.d("LOGIN MID", "not login");
                     // 跳转到登录
                     Bundle data = new Bundle();
@@ -52,5 +49,9 @@ public class LoginMiddleware implements Middleware {
                 next.handle(ctx);
             }
         };
+    }
+
+    public interface IsLoginChecker {
+        boolean check(android.content.Context context);
     }
 }

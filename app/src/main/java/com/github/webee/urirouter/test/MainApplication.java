@@ -2,6 +2,8 @@ package com.github.webee.urirouter.test;
 
 import android.app.Application;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import com.github.webee.urirouter.core.Context;
@@ -12,12 +14,12 @@ import com.github.webee.urirouter.core.URIRouters;
 import com.github.webee.urirouter.handlers.ActivityHandler;
 import com.github.webee.urirouter.middlewares.HandleCtxMiddleware;
 import com.github.webee.urirouter.middlewares.LogMiddleware;
+import com.github.webee.urirouter.middlewares.LoginMiddleware;
 import com.github.webee.urirouter.middlewares.PathParamsMiddleware;
 import com.github.webee.urirouter.middlewares.QueryParamsMiddleware;
 import com.github.webee.urirouter.openers.BrowserOpener;
 import com.github.webee.urirouter.openers.LogOpener;
 import com.github.webee.urirouter.openers.SchemeHostFilterOpener;
-import com.github.webee.urirouter.test.middlewares.LoginMiddleware;
 import com.github.webee.urirouter.test.openers.MyUnhandledOpener;
 
 /**
@@ -55,7 +57,15 @@ public class MainApplication extends Application {
 
         // user router.
         Router userRouter = root.mount("/user");
-        Middleware loginMiddleware = new LoginMiddleware("/login/");
+        // 权限中间件
+        Middleware loginMiddleware = new LoginMiddleware("/login/", new LoginMiddleware.IsLoginChecker() {
+            @Override
+            public boolean check(android.content.Context context) {
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+                return sharedPref.getBoolean(LoginActivity.KEY_IS_LOGIN, false);
+            }
+        });
+
         userRouter.use(loginMiddleware);
         userRouter.add("/:uid/:age@int/", ActivityHandler.create(UserActivity.class));
         userRouter.add("/*", ActivityHandler.create(TestActivity.class));
