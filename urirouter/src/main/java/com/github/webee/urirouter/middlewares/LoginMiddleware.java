@@ -29,22 +29,24 @@ public class LoginMiddleware implements Middleware {
         return new Handler() {
             @Override
             public void handle(Context ctx) {
-                if (!isLoginChecker.check(ctx.context)) {
-                    Log.d("LOGIN MID", "not login");
-                    // 跳转到登录
-                    Bundle data = new Bundle();
-                    data.putParcelable(ProxyActivity.EXTRA_REFERRER, ctx.request.uri);
-                    data.putBundle(ProxyActivity.EXTRA_REFERRER_CTX_DATA, ctx.data.bundle);
-                    data.putBundle(ProxyActivity.EXTRA_REFERRER_REQ_DATA, ctx.request.data);
+                if (!ctx.request.uri.getPath().equals(loginPath)) {
+                    if (!isLoginChecker.check(ctx.context)) {
+                        Log.d("LOGIN MID", "not login");
+                        // 跳转到登录
+                        Bundle data = new Bundle();
+                        data.putParcelable(ProxyActivity.EXTRA_REFERRER, ctx.request.uri);
+                        data.putBundle(ProxyActivity.EXTRA_REFERRER_CTX_DATA, ctx.data.bundle);
+                        data.putBundle(ProxyActivity.EXTRA_REFERRER_REQ_DATA, ctx.request.data);
 
-                    data.putParcelable(ProxyActivity.EXTRA_TARGET, Uri.parse(loginPath));
+                        data.putParcelable(ProxyActivity.EXTRA_TARGET, Uri.parse(loginPath));
 
-                    URIRouters.route(ActivityHandler.PROXY_PATH)
-                            .withContext(ctx.context)
-                            .withCtxData(ctx.data)
-                            .withReqData(data)
-                            .open();
-                    return;
+                        URIRouters.route(ActivityHandler.PROXY_PATH)
+                                .withContext(ctx.context)
+                                .withCtxData(ctx.data)
+                                .withReqData(data)
+                                .open();
+                        return;
+                    }
                 }
                 next.handle(ctx);
             }
