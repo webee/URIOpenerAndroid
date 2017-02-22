@@ -10,55 +10,43 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.github.webee.urirouter.test.MainActivity">
 
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/uriView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:id="@+id/textView2" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="/test/hello"
+        android:ems="10"
+        android:id="@+id/uriView"
+        android:textAlignment="center"
+        android:inputType="text"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:text="open"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/uriView"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/openBtn" />
+
     <LinearLayout
-        android:id="@+id/links"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="https://hyperwood.com/a/b/" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="https://hyperwood.com/test/?name=webee&amp;ageTint=28" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:autoLink="web"
-            android:text="hyperwood:///test/" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="https://hyperwood.com/user/webee/28/?name=vivian&amp;name=xiaoee&amp;ageTint=27" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="hyperwood:///user/webee/28/" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="https://hyperwood.com/user/xxx/" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="hyperwood:///user/xxx/" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="hyperwood:///xxxx/a/" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="hyperwood:///xxxx/a/b/" />
+        android:layout_below="@+id/openBtn"
+        android:id="@+id/links"
+        android:divider="@drawable/simple_divider"
+        android:showDividers="beginning|middle|end"
+        android:layout_centerHorizontal="true">
     </LinearLayout>
 </RelativeLayout>

@@ -14,8 +14,11 @@ import com.github.webee.urirouter.middlewares.HandleCtxMiddleware;
 import com.github.webee.urirouter.middlewares.LogMiddleware;
 import com.github.webee.urirouter.middlewares.PathParamsMiddleware;
 import com.github.webee.urirouter.middlewares.QueryParamsMiddleware;
+import com.github.webee.urirouter.openers.BrowserOpener;
 import com.github.webee.urirouter.openers.LogOpener;
+import com.github.webee.urirouter.openers.SchemeHostFilterOpener;
 import com.github.webee.urirouter.test.middlewares.LoginMiddleware;
+import com.github.webee.urirouter.test.openers.MyUnhandledOpener;
 
 /**
  * Created by webee on 17/2/20.
@@ -26,7 +29,15 @@ public class MainApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        URIRouters.registerOpener(new LogOpener());
+        // 设置openers
+        URIRouters.insertOpener(new LogOpener(),
+                new SchemeHostFilterOpener("",
+                        "hyperwood:///", "http://hyperwood.com", "https://hyperwood.com")
+                );
+        URIRouters.appendOpener(new BrowserOpener());
+        URIRouters.appendOpener(new MyUnhandledOpener());
+
+        // 设置路由和路由中间件
         Router root = URIRouters.root;
         root.use(new LogMiddleware(),
                 new PathParamsMiddleware(),
@@ -53,10 +64,10 @@ public class MainApplication extends Application {
         Router testRouter = root.mount("/test", true);
         testRouter.add("/", ActivityHandler.create(TestActivity.class));
         testRouter.add("/result/", ActivityHandler.create(ResultActivity.class), loginMiddleware);
-        testRouter.add("/toast", new Handler() {
+        testRouter.add("/hello", new Handler() {
             @Override
             public void handle(Context ctx) {
-                Toast.makeText(ctx.context, ctx.request.uri.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ctx.context, "Hello", Toast.LENGTH_SHORT).show();
             }
         });
     }

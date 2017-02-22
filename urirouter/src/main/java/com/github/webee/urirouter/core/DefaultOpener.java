@@ -9,7 +9,8 @@ import android.os.Bundle;
 
 public class DefaultOpener implements Opener {
     @Override
-    public boolean open(android.content.Context context, Uri uri, Route route, Data ctxData, Bundle reqData) {
+    public boolean open(android.content.Context context, Uri uri, Data ctxData, Bundle reqData) {
+        Route route = URIRouters.root.find(uri.getPath());
         if (route != null) {
             Request request = new Request(uri, route.pathParams);
             if (reqData != null) {

@@ -35,6 +35,11 @@ public class LoginActivity extends AppCompatActivity {
         next = intent.getParcelableExtra(EXTRA_NEXT);
         nextCtxData = new Data(intent.getBundleExtra(EXTRA_NEXT_CTX_DATA));
         nextReqData = intent.getBundleExtra(EXTRA_NEXT_REQ_DATA);
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        if (sharedPref.getBoolean(KEY_IS_LOGIN, false)) {
+            hasLogin();
+        }
     }
 
     @OnClick(R.id.login)
@@ -44,6 +49,10 @@ public class LoginActivity extends AppCompatActivity {
         editor.putBoolean(KEY_IS_LOGIN, true);
         editor.apply();
 
+        hasLogin();
+    }
+
+    private void hasLogin() {
         if (next != null) {
             URIRouters.open(this, next, nextCtxData, nextReqData);
         } else {

@@ -8,5 +8,5 @@ import android.os.Bundle;
  */
 
 public interface Opener {
-    boolean open(android.content.Context context, Uri uri, Route route, Data ctxData, Bundle reqData);
+    boolean open(android.content.Context context, Uri uri, Data ctxData, Bundle reqData);
 }

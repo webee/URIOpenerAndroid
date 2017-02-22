@@ -41,12 +41,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TestActivity" />
-        <activity android:name=".UserActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".ResultActivity" />
-        <activity android:name=".DumpRequestActivity" />
-        <activity android:name=".NotImplementedActivity"></activity>
+        <activity android:label="Test" android:name=".TestActivity" />
+        <activity android:label="User" android:name=".UserActivity" />
+        <activity android:label="Login" android:name=".LoginActivity" />
+        <activity android:label="Request Result" android:name=".ResultActivity" />
+        <activity android:label="Request Infos" android:name=".DumpRequestActivity" />
+        <activity android:label="Not Implemented" android:name=".NotImplementedActivity"></activity>
     </application>
 
 </manifest>

@@ -7,7 +7,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
         android:title="result"
         app:showAsAction="always" />
 <item
-    android:id="@+id/toast"
+    android:id="@+id/testHello"
     android:icon="@drawable/ic_info_white_24dp"
     android:title="toast"
     app:showAsAction="always" />

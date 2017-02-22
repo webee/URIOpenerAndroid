@@ -10,6 +10,7 @@ import com.github.webee.urirouter.core.Handler;
 import com.github.webee.urirouter.core.Param;
 import com.github.webee.urirouter.core.Request;
 import com.github.webee.urirouter.core.Route;
+import com.github.webee.urirouter.core.URIRouters;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,12 +22,17 @@ import static com.github.webee.urirouter.core.Request.EXTRA_URI;
  */
 
 public class ActivityHandler implements Handler {
+    public static final String PROXY_PATH = ActivityHandler.class.getName() + ".proxy";
     public static final String DATA_OPTIONS = ActivityHandler.class.getName() + ".options";
     public static final String DATA_REQUEST_CODE = ActivityHandler.class.getName() + ".request_code";
     public static final String DATA_FLAGS = ActivityHandler.class.getName() + ".flags";
     public static final String DATA_INTENT_PROCESSOR = ActivityHandler.class.getName() + ".intent_processor";
     private static final Map<Class<? extends Activity>, Handler> handlers = new HashMap<>();
     private final Class<? extends Activity> cls;
+
+    static {
+        URIRouters.root.add(PROXY_PATH, create(ProxyActivity.class));
+    }
 
     public static Handler create(Class<? extends Activity> cls) {
         Handler handler = handlers.get(cls);

@@ -7,7 +7,6 @@ import android.util.Log;
 
 import com.github.webee.urirouter.core.Data;
 import com.github.webee.urirouter.core.Opener;
-import com.github.webee.urirouter.core.Route;
 
 /**
  * Created by webee on 17/2/22.
@@ -17,11 +16,10 @@ public class LogOpener implements Opener {
     public static final String TAG = "OPENER.LOG";
 
     @Override
-    public boolean open(Context context, Uri uri, Route route, Data ctxData, Bundle reqData) {
+    public boolean open(Context context, Uri uri, Data ctxData, Bundle reqData) {
         Log.d(TAG, String.format("START: %d", System.currentTimeMillis()));
         Log.d(TAG, String.format("context: %s", context));
         Log.d(TAG, String.format("uri: %s", uri));
-        Log.d(TAG, String.format("route: %s", route));
         Log.d(TAG, String.format("ctxData: %s", ctxData));
         Log.d(TAG, String.format("reqData: %s", reqData));
         Log.d(TAG, "...");

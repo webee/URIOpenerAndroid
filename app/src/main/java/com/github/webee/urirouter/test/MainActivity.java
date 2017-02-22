@@ -10,32 +10,67 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.webee.urirouter.core.URIRouters;
 import com.github.webee.urirouter.handlers.ActivityHandler;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class MainActivity extends AppCompatActivity {
+    @BindView(R.id.uriView)
+    EditText uriView;
+
+    private String[] pathes = new String[]{
+            "https://hyperwood.com/a/b/",
+            "https://hyperwood.com/test/?name=webee&ageTint=28",
+            "hyperwood:///test/",
+            "https://hyperwood.com/user/webee/28/?name=vivian&name=xiaoee&ageTint=27",
+            "hyperwood:///user/webee/28/",
+            "https://hyperwood.com/user/xxx/",
+            "hyperwood:///user/xxx/",
+            "hyperwood:///xxxx/a/",
+            "hyperwood:///xxxx/a/b/",
+            "/test/hello",
+            "/test/result/",
+            "/login/",
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
         ViewGroup links = (ViewGroup) findViewById(R.id.links);
-        for (int i = 0; i < links.getChildCount(); i++) {
-            final View view = links.getChildAt(i);
-            if (view instanceof TextView) {
-                view.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Uri uri = Uri.parse(((TextView) view).getText().toString());
+        for (String path : pathes) {
+            TextView tv = new TextView(this);
+            tv.setText(path);
+            links.addView(tv);
+            tv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Uri uri = Uri.parse(((TextView) v).getText().toString());
+                    URIRouters.open(MainActivity.this, uri);
+                    // OR:
+                    /*
+                    if (uri.getScheme() == null || uri.getScheme().equals("")) {
                         startActivity(new Intent(Intent.ACTION_VIEW, uri));
                     }
-                });
-            }
+                    */
+                }
+            });
         }
+    }
+
+    @OnClick(R.id.openBtn)
+    public void open() {
+        String path = uriView.getText().toString();
+        URIRouters.open(this, path);
     }
 
     @Override
@@ -54,8 +89,8 @@ public class MainActivity extends AppCompatActivity {
                                 .withRequestCode(1)
                                 .build());
                 return true;
-            case R.id.toast:
-                URIRouters.open(this, "/test/toast");
+            case R.id.testHello:
+                URIRouters.open(this, "/test/hello");
                 return true;
             case R.id.switch_user:
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);

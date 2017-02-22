@@ -42,7 +42,7 @@ public class LoginMiddleware implements Middleware {
 
                     data.putParcelable(ProxyActivity.EXTRA_TARGET, Uri.parse(loginPath));
 
-                    URIRouters.route(ActivityHandler.route(ProxyActivity.class))
+                    URIRouters.route(ActivityHandler.PROXY_PATH)
                             .withContext(ctx.context)
                             .withCtxData(ctx.data)
                             .withReqData(data)

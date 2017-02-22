@@ -1,5 +1,6 @@
 package com.github.webee.urirouter.core;
 
+import android.app.Application;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -11,17 +12,37 @@ import java.util.List;
  */
 
 public final class URIRouters {
+    private static Application app;
     public static final List<Opener> openers = new LinkedList<>();
     public static final Router root = new Router();
 
     static {
-        registerOpener(new DefaultOpener());
+        // openers
+        appendOpener(new DefaultOpener());
     }
 
-    public static void registerOpener(Opener ...newOpeners) {
+    public static void init(Application app) {
+        URIRouters.app = app;
+    }
+
+    public static void insertOpener(Opener... newOpeners) {
         for (int i = newOpeners.length - 1; i >= 0; i--) {
             openers.add(0, newOpeners[i]);
         }
+    }
+
+    public static void appendOpener(Opener... newOpeners) {
+        for (int i = 0; i < newOpeners.length; i++) {
+            openers.add(newOpeners[i]);
+        }
+    }
+
+    public static boolean open(String path) {
+        return open(app, path);
+    }
+
+    public static boolean open(Uri uri) {
+        return open(app, uri);
     }
 
     public static boolean open(android.content.Context context, String path) {
@@ -41,47 +62,38 @@ public final class URIRouters {
     }
 
     public static boolean open(android.content.Context context, Uri uri, Data ctxData, Bundle reqData) {
-        return open(context, uri, root.find(uri.getPath()), ctxData, reqData);
-    }
+        if (context == null) {
+            context = app;
+        }
 
-    public static boolean open(android.content.Context context, Route route, Data ctxData, Bundle reqData) {
-        return open(context, null, route, ctxData, reqData);
-    }
-
-    public static boolean open(android.content.Context context, Uri uri, Route route, Data ctxData, Bundle reqData) {
         for (Opener opener : openers) {
-            if (opener.open(context, uri, route, ctxData, reqData)) {
-                return true;
+            try {
+                if (opener.open(context, uri, ctxData, reqData)) {
+                    return true;
+                }
+            } catch (Throwable r) {
+                r.printStackTrace();
             }
         }
         return false;
     }
 
     public static Builder route(String path) {
-        return new Builder(Uri.parse(path));
+        return route(Uri.parse(path));
     }
 
     public static Builder route(Uri uri) {
         return new Builder(uri);
     }
 
-    public static Builder route(Route route) {
-        return new Builder(route);
-    }
-
     public static class Builder {
         private android.content.Context context;
         private Uri uri;
-        private Route route;
         private Data ctxData;
         private Bundle reqData;
 
         Builder(Uri uri) {
             this.uri = uri;
-        }
-
-        Builder(Route route) {
-            this.route = route;
         }
 
         public Builder withContext(android.content.Context context) {
@@ -110,7 +122,7 @@ public final class URIRouters {
         }
 
         public boolean open() {
-            return URIRouters.open(context, uri, route, ctxData, reqData);
+            return URIRouters.open(context, uri, ctxData, reqData);
         }
     }
 }
