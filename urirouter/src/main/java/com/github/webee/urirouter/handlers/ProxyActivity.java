@@ -9,13 +9,13 @@ import com.github.webee.urirouter.core.Data;
 import com.github.webee.urirouter.core.URIRouters;
 
 public class ProxyActivity extends Activity {
-    public static final String EXTRA_REFERRER = ProxyActivity.class.getName() + ".referrer";
-    public static final String EXTRA_REFERRER_CTX_DATA = ProxyActivity.class.getName() + ".referrer_ctx_data";
-    public static final String EXTRA_REFERRER_REQ_DATA = ProxyActivity.class.getName() + ".referrer_req_data";
+    public static final String EXTRA_REFERRER = "referrer";
+    public static final String EXTRA_REFERRER_CTX_DATA = "referrer_ctx_data";
+    public static final String EXTRA_REFERRER_REQ_DATA = "referrer_req_data";
 
-    public static final String EXTRA_TARGET = ProxyActivity.class.getName() + ".target";
-    public static final String EXTRA_TARGET_CTX_DATA = ProxyActivity.class.getName() + ".target_ctx_data";
-    public static final String EXTRA_TARGET_REQ_DATA = ProxyActivity.class.getName() + ".target_req_data";
+    public static final String EXTRA_TARGET = "target";
+    public static final String EXTRA_TARGET_CTX_DATA = "target_ctx_data";
+    public static final String EXTRA_TARGET_REQ_DATA = "target_req_data";
 
     private static final int TARGET_REQ_CODE = 319;
     private static final int REFERRER_REQ_CODE = 320;
