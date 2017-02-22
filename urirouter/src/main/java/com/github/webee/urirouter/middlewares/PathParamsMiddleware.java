@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import com.github.webee.urirouter.core.Context;
 import com.github.webee.urirouter.core.Handler;
-import com.github.webee.urirouter.core.Middleware;
 import com.github.webee.urirouter.core.Param;
 import com.github.webee.urirouter.core.Request;
 
@@ -16,14 +15,13 @@ import static com.github.webee.urirouter.core.Request.EXTRA_PATH_PARAMS;
  * Created by webee on 17/2/20.
  */
 
-public class PathParamsMiddleware implements Middleware {
-    private String TYPE_SEP_REGEX = "@";
-
+public class PathParamsMiddleware extends ParseParamsMiddleware {
     public PathParamsMiddleware() {
+        super();
     }
 
     public PathParamsMiddleware(String typeSep) {
-        TYPE_SEP_REGEX = typeSep;
+        super(typeSep);
     }
 
     @Override
@@ -37,7 +35,7 @@ public class PathParamsMiddleware implements Middleware {
                     Bundle data = request.data;
                     Bundle pathParamsData = new Bundle();
                     for (Param param : pathParams) {
-                        ValueParser.parse(pathParamsData, param.name, TYPE_SEP_REGEX, param.value);
+                        ValueParsers.parse(pathParamsData, param.name, TYPE_SEP_REGEX, param.value, parsers);
                     }
                     data.putBundle(EXTRA_PATH_PARAMS, pathParamsData);
                 }

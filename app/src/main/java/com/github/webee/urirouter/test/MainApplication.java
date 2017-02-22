@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.widget.Toast;
 
 import com.github.webee.urirouter.core.Context;
-import com.github.webee.urirouter.core.Data;
 import com.github.webee.urirouter.core.Handler;
 import com.github.webee.urirouter.core.Middleware;
 import com.github.webee.urirouter.core.Router;
@@ -33,9 +32,7 @@ public class MainApplication extends Application {
                 new HandleCtxMiddleware(new Handler() {
                     @Override
                     public void handle(Context ctx) {
-                        Integer flags = ctx.data.get(ActivityHandler.DATA_FLAGS);
-                        Data data = ActivityHandler.ctxData().withFlags(flags, Intent.FLAG_ACTIVITY_REORDER_TO_FRONT).build();
-                        ctx.data.putAll(data);
+                        ctx.setData(ActivityHandler.ctxData(ctx.data).withFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT).build());
                     }
                 }));
 

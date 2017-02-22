@@ -49,6 +49,10 @@ public class ActivityHandler implements Handler {
         return new CtxDataBuilder();
     }
 
+    public static CtxDataBuilder ctxData(Data data) {
+        return new CtxDataBuilder(data);
+    }
+
     @Override
     public void handle(Context ctx) {
         android.content.Context context = ctx.context;
@@ -85,10 +89,26 @@ public class ActivityHandler implements Handler {
     }
 
     public static class CtxDataBuilder {
+        Data data = null;
+
         Bundle options;
         Integer requestCode;
         int flags = 0;
         IntentProcessor intentProcessor;
+
+        public CtxDataBuilder() {
+        }
+
+        public CtxDataBuilder(Data data) {
+            this.data = data;
+            if (this.data != null) {
+                options = this.data.get(DATA_OPTIONS);
+                requestCode = this.data.get(DATA_REQUEST_CODE);
+                if (this.data.containsKey(DATA_FLAGS)) {
+                    flags = this.data.get(DATA_FLAGS);
+                }
+            }
+        }
 
         public CtxDataBuilder withOptions(Bundle data) {
             if (data != null) {
@@ -125,11 +145,6 @@ public class ActivityHandler implements Handler {
         }
 
         public Data build() {
-            if (options == null && requestCode == null && flags == 0 && intentProcessor == null) {
-                return null;
-            }
-
-            Data data = new Data();
             if (options != null) {
                 data.bundle.putBundle(DATA_OPTIONS, options);
             }

@@ -16,4 +16,8 @@ public class Context {
         this.request = request;
         this.response = response;
     }
+
+    public void setData(Data data) {
+        this.data = data;
+    }
 }
