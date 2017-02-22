@@ -22,4 +22,13 @@ public class Request {
         this.uri = uri;
         this.pathParams = pathParams;
     }
+
+    @Override
+    public String toString() {
+        return "Request{" +
+                "uri=" + uri +
+                ", pathParams=" + pathParams +
+                ", data=" + data +
+                '}';
+    }
 }

@@ -51,4 +51,12 @@ public class Data {
     public boolean containsKey(String key) {
         return data.containsKey(key) || bundle.containsKey(key);
     }
+
+    @Override
+    public String toString() {
+        return "Data{" +
+                "bundle=" + bundle +
+                ", data=" + data +
+                '}';
+    }
 }

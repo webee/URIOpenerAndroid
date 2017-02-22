@@ -11,15 +11,19 @@ import com.github.webee.urirouter.core.Middleware;
  */
 
 public class LogMiddleware implements Middleware {
+    public static final String TAG = "HANDLER.LOG";
+
     @Override
     public Handler process(final Handler next) {
         return new Handler() {
             @Override
             public void handle(Context ctx) {
-                Log.d("ROUTER.LOG", String.format("from: %s", ctx.context.toString()));
-                Log.d("ROUTER.LOG", String.format("to: %s", ctx.request.uri.toString()));
-                Log.d("ROUTER.LOG", String.format("ctx: %s", ctx.data));
-                Log.d("ROUTER.LOG", String.format("req: %s", ctx.request.data));
+                Log.d(TAG, String.format("START: %d", System.currentTimeMillis()));
+                Log.d(TAG, String.format("context: %s", ctx.context));
+                Log.d(TAG, String.format("ctxData: %s", ctx.data));
+                Log.d(TAG, String.format("request: %s", ctx.request));
+                Log.d(TAG, String.format("response: %s", ctx.response));
+                Log.d(TAG, "...");
 
                 next.handle(ctx);
             }

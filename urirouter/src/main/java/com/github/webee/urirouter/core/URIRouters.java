@@ -3,12 +3,26 @@ package com.github.webee.urirouter.core;
 import android.net.Uri;
 import android.os.Bundle;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Created by webee on 17/2/17.
  */
 
 public final class URIRouters {
+    public static final List<Opener> openers = new LinkedList<>();
     public static final Router root = new Router();
+
+    static {
+        registerOpener(new DefaultOpener());
+    }
+
+    public static void registerOpener(Opener ...newOpeners) {
+        for (int i = newOpeners.length - 1; i >= 0; i--) {
+            openers.add(0, newOpeners[i]);
+        }
+    }
 
     public static boolean open(android.content.Context context, String path) {
         return open(context, Uri.parse(path));
@@ -35,18 +49,10 @@ public final class URIRouters {
     }
 
     public static boolean open(android.content.Context context, Uri uri, Route route, Data ctxData, Bundle reqData) {
-        if (route != null) {
-            Request request = new Request(uri, route.pathParams);
-            if (reqData != null) {
-                request.data.putAll(reqData);
+        for (Opener opener : openers) {
+            if (opener.open(context, uri, route, ctxData, reqData)) {
+                return true;
             }
-
-            Context ctx = new Context(context, request, null);
-            if (ctxData != null) {
-                ctx.data.putAll(ctxData);
-            }
-            route.handler.handle(ctx);
-            return true;
         }
         return false;
     }
@@ -104,10 +110,7 @@ public final class URIRouters {
         }
 
         public boolean open() {
-            if (route != null) {
-                return URIRouters.open(context, route, ctxData, reqData);
-            }
-            return URIRouters.open(context, uri, ctxData, reqData);
+            return URIRouters.open(context, uri, route, ctxData, reqData);
         }
     }
 }

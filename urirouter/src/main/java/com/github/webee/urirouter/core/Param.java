@@ -12,4 +12,9 @@ public class Param {
         this.name = name;
         this.value = value;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Param{%s => %s}", name, value);
+    }
 }

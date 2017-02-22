@@ -20,4 +20,14 @@ public class Context {
     public void setData(Data data) {
         this.data = data;
     }
+
+    @Override
+    public String toString() {
+        return "Context{" +
+                "context=" + context +
+                ", data=" + data +
+                ", request=" + request +
+                ", response=" + response +
+                '}';
+    }
 }

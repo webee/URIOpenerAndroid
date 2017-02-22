@@ -14,6 +14,7 @@ import com.github.webee.urirouter.middlewares.HandleCtxMiddleware;
 import com.github.webee.urirouter.middlewares.LogMiddleware;
 import com.github.webee.urirouter.middlewares.PathParamsMiddleware;
 import com.github.webee.urirouter.middlewares.QueryParamsMiddleware;
+import com.github.webee.urirouter.openers.LogOpener;
 import com.github.webee.urirouter.test.middlewares.LoginMiddleware;
 
 /**
@@ -25,6 +26,7 @@ public class MainApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        URIRouters.registerOpener(new LogOpener());
         Router root = URIRouters.root;
         root.use(new LogMiddleware(),
                 new PathParamsMiddleware(),

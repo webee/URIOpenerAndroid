@@ -54,4 +54,13 @@ public class Route {
         }
         return new Route(route, pathParams);
     }
+
+    @Override
+    public String toString() {
+        return "Route{" +
+                "pathParams=" + pathParams +
+                ", hasHandler=" + (handler != null) +
+                ", finalized=" + finalized +
+                '}';
+    }
 }

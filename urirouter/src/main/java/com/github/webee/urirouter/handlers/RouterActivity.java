@@ -38,26 +38,31 @@ public class RouterActivity extends Activity {
 
             if (!URIRouters.open(this, uri, ctxData, extras)) {
                 if (WEB_SCHEMES.contains(uri.getScheme())) {
-                    Intent i = new Intent(Intent.ACTION_VIEW, uri);
-                    if (extras != null) {
-                        i.putExtras(extras);
-                    }
-                    ResolveInfo defaultResolution = getPackageManager().resolveActivity(i, PackageManager.MATCH_DEFAULT_ONLY);
-
-                    // If this app is the default app for entry URLs, use the browser instead
-                    if (defaultResolution.activityInfo.packageName.equals(getPackageName())) {
-                        Intent browseIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://"));
-                        ResolveInfo browseResolution = getPackageManager().resolveActivity(browseIntent,
-                                PackageManager.MATCH_DEFAULT_ONLY);
-                        i.setComponent(new ComponentName(
-                                browseResolution.activityInfo.applicationInfo.packageName,
-                                browseResolution.activityInfo.name));
-
-                    }
-                    startActivity(i);
+                    openUriWithBrowser(uri, extras);
                 }
             }
         }
         finish();
+    }
+
+    private void openUriWithBrowser(Uri uri, Bundle extras) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        if (extras != null) {
+            intent.putExtras(extras);
+        }
+        ResolveInfo defaultResolution = getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
+
+        // If this app is the default app for entry URLs, use the browser instead
+        if (defaultResolution.activityInfo.packageName.equals(getPackageName())) {
+            Intent browseIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://"));
+            ResolveInfo browseResolution = getPackageManager().resolveActivity(browseIntent,
+                    PackageManager.MATCH_DEFAULT_ONLY);
+            intent.setComponent(new ComponentName(
+                    browseResolution.activityInfo.applicationInfo.packageName,
+                    browseResolution.activityInfo.name));
+
+        }
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }
