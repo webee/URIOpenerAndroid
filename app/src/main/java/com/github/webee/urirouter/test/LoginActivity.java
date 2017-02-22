@@ -39,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         if (sharedPref.getBoolean(KEY_IS_LOGIN, false)) {
             hasLogin();
+            return;
         }
     }
 

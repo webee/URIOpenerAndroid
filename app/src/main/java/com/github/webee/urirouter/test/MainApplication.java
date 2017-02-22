@@ -31,12 +31,18 @@ public class MainApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        URIRouters.init(this);
         // 设置openers
         URIRouters.insertOpener(new LogOpener(),
+                // FIXME:
+                // 为了在app内部使用URIRouters打开任意链接
+                // 不匹配的将使用ACTION_VIEW打开
                 new SchemeHostFilterOpener("",
                         "hyperwood:///", "http://hyperwood.com", "https://hyperwood.com")
                 );
+        // 无法打开的web链接使用浏览器打开
         URIRouters.appendOpener(new BrowserOpener());
+        // 无法处理的请求
         URIRouters.appendOpener(new MyUnhandledOpener());
 
         // 设置路由和路由中间件
