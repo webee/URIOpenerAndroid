@@ -8,11 +8,19 @@ import android.os.Bundle;
 import com.github.webee.urirouter.core.Data;
 import com.github.webee.urirouter.core.URIRouters;
 
+/**
+ * external entry.
+ */
 public class RouterActivity extends Activity {
-    private static Data ctxData;
+    private static final String IS_FROM_EXTERNAL = RouterActivity.class.getName() + ".is_from_external";
+    private static Data ctxData = new Data();
+
+    static {
+        ctxData.put(IS_FROM_EXTERNAL, true);
+    }
 
     public static void setCtxData(Data data) {
-        ctxData = data;
+        ctxData.putAll(data);
     }
 
     @Override
@@ -27,5 +35,13 @@ public class RouterActivity extends Activity {
             URIRouters.open(this, uri, ctxData, extras);
         }
         finish();
+    }
+
+    public static boolean isFromExternal(Data ctxData) {
+        if (ctxData != null) {
+            Boolean t = ctxData.get(IS_FROM_EXTERNAL);
+            return t != null && t;
+        }
+        return false;
     }
 }

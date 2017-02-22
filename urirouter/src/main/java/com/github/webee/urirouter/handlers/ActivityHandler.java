@@ -106,14 +106,24 @@ public class ActivityHandler implements Handler {
             data = new Data();
         }
 
-        public CtxDataBuilder(Data data) {
-            this.data = data;
-            if (this.data != null) {
-                options = this.data.get(DATA_OPTIONS);
-                requestCode = this.data.get(DATA_REQUEST_CODE);
-                if (this.data.containsKey(DATA_FLAGS)) {
-                    flags = this.data.get(DATA_FLAGS);
+        public CtxDataBuilder(Data srcData) {
+            data = srcData;
+            if (data != null) {
+                options = data.get(DATA_OPTIONS);
+                data.remove(DATA_OPTIONS);
+
+                requestCode = data.get(DATA_REQUEST_CODE);
+                data.remove(DATA_REQUEST_CODE);
+
+                if (data.containsKey(DATA_FLAGS)) {
+                    flags = data.get(DATA_FLAGS);
+                    data.remove(DATA_FLAGS);
                 }
+
+                intentProcessor = data.get(DATA_INTENT_PROCESSOR);
+                data.remove(DATA_INTENT_PROCESSOR);
+            } else {
+                data = new Data();
             }
         }
 

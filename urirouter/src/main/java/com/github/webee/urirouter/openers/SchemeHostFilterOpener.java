@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import com.github.webee.urirouter.core.Data;
 import com.github.webee.urirouter.core.Opener;
+import com.github.webee.urirouter.handlers.RouterActivity;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -46,6 +47,11 @@ public class SchemeHostFilterOpener implements Opener {
 
     @Override
     public boolean open(Context context, Uri uri, Data ctxData, Bundle reqData) {
+        if (RouterActivity.isFromExternal(ctxData)) {
+            // 来自外部的链接肯定是可以处理的，不需要过滤
+            return false;
+        }
+
         if (!isAllowed(uri.getScheme(), uri.getHost())) {
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             if (reqData != null) {

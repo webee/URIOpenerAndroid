@@ -48,6 +48,11 @@ public class Data {
         return (T) val;
     }
 
+    public void remove(String key) {
+        data.remove(key);
+        bundle.remove(key);
+    }
+
     public boolean containsKey(String key) {
         return data.containsKey(key) || bundle.containsKey(key);
     }
