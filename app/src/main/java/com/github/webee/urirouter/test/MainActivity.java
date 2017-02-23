@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         ViewGroup links = (ViewGroup) findViewById(R.id.links);
         for (String path : pathes) {
             TextView tv = new TextView(this);
+            tv.setBackgroundResource(R.drawable.text_link_selector_bg);
             tv.setText(path);
             links.addView(tv);
             tv.setOnClickListener(new View.OnClickListener() {
