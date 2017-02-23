@@ -36,9 +36,9 @@ public class DumpRequestActivity extends AppCompatActivity {
         info.append(String.format("uri => %s\n", uri.toString()));
 
         // path params
-        info.append("\n");
-        info.append("Path Parameters:\n");
         if (pathParams != null) {
+            info.append("\n");
+            info.append("Path Parameters:\n");
             for (String key : pathParams.keySet()) {
                 Object val = pathParams.get(key);
                 info.append(String.format("path: %s -> %s(%s)\n", key, val, val.getClass().getName()));
@@ -46,9 +46,9 @@ public class DumpRequestActivity extends AppCompatActivity {
         }
 
         // query params
-        info.append("\n");
-        info.append("Query Parameters:\n");
         if (queryParams != null) {
+            info.append("\n");
+            info.append("Query Parameters:\n");
             for (String key : queryParams.keySet()) {
                 Object val = queryParams.get(key);
                 info.append(String.format("query: %s -> %s(%s)\n", key, val, val.getClass().getName()));
@@ -56,17 +56,19 @@ public class DumpRequestActivity extends AppCompatActivity {
         }
 
         // extras
-        info.append("\n");
-        info.append("Extras:\n");
         Bundle extras = new Bundle();
         extras.putAll(intent.getExtras());
         extras.remove(EXTRA_URI);
         extras.remove(EXTRA_PATH_PARAMS);
         extras.remove(EXTRA_QUERY_PARAMS);
 
-        for (String key : extras.keySet()) {
-            Object val = extras.get(key);
-            info.append(String.format("extra: %s -> %s(%s)\n", key, val, val.getClass().getName()));
+        if (extras.size() > 0) {
+            info.append("\n");
+            info.append("Extras:\n");
+            for (String key : extras.keySet()) {
+                Object val = extras.get(key);
+                info.append(String.format("extra: %s -> %s(%s)\n", key, val, val.getClass().getName()));
+            }
         }
     }
 }
