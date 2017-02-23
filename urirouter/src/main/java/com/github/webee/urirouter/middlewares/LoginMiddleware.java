@@ -26,9 +26,9 @@ public class LoginMiddleware implements Middleware {
 
     @Override
     public Handler process(final Handler next) {
-        return new Handler() {
+        return new MiddlewareHandler(this, next) {
             @Override
-            public void handle(Context ctx) {
+            public void handling(Handler next, Context ctx) {
                 if (!ctx.request.uri.getPath().equals(loginPath)) {
                     if (!isLoginChecker.check(ctx.context)) {
                         Log.d("LOGIN MID", "not login");
@@ -55,5 +55,12 @@ public class LoginMiddleware implements Middleware {
 
     public interface IsLoginChecker {
         boolean check(android.content.Context context);
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getName() + "{" +
+                "loginPath='" + loginPath + '\'' +
+                '}';
     }
 }

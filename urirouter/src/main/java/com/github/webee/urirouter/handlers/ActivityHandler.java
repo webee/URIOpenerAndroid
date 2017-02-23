@@ -181,4 +181,9 @@ public class ActivityHandler implements Handler {
             return data;
         }
     }
+
+    @Override
+    public String toString() {
+        return "ActivityHandler{" + cls + '}';
+    }
 }

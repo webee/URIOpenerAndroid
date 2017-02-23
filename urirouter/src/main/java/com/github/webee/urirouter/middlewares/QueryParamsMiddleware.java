@@ -28,9 +28,9 @@ public class QueryParamsMiddleware extends ParseParamsMiddleware {
 
     @Override
     public Handler process(final Handler next) {
-        return new Handler() {
+        return new MiddlewareHandler(this, next) {
             @Override
-            public void handle(Context ctx) {
+            public void handling(Handler next, Context ctx) {
                 Request request = ctx.request;
                 List<Param> pathParams = request.pathParams;
                 Uri uri = ctx.request.uri;
@@ -50,5 +50,12 @@ public class QueryParamsMiddleware extends ParseParamsMiddleware {
                 next.handle(ctx);
             }
         };
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getName() + "{" +
+                "typeSeq='" + TYPE_SEP_REGEX + '\'' +
+                "}";
     }
 }

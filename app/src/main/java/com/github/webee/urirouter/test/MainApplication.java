@@ -78,6 +78,7 @@ public class MainApplication extends Application {
 
         // test router.
         Router testRouter = root.mount("/test", true);
+        testRouter.use(new LogMiddleware());
         testRouter.add("/", ActivityHandler.create(TestActivity.class));
         testRouter.add("/result/", ActivityHandler.create(ResultActivity.class), loginMiddleware);
         testRouter.add("/hello", new Handler() {

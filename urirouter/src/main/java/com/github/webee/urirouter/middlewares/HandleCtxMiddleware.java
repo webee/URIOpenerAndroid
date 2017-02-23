@@ -17,9 +17,9 @@ public class HandleCtxMiddleware implements Middleware {
 
     @Override
     public Handler process(final Handler next) {
-        return new Handler() {
+        return new MiddlewareHandler(this, next) {
             @Override
-            public void handle(Context ctx) {
+            public void handling(Handler next, Context ctx) {
                 if (handler != null) {
                     handler.handle(ctx);
                 }
