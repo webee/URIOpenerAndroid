@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     EditText uriView;
 
     private String[] pathes = new String[]{
+            "https://t.xchat.engdd.com/www/links.html",
             "https://hyperwood.com/a/b/",
             "https://hyperwood.com/test/?name=webee&ageTint=28",
             "hyperwood:///test/",

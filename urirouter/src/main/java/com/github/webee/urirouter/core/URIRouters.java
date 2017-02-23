@@ -96,30 +96,30 @@ public final class URIRouters {
         return false;
     }
 
-    public static Builder route(String path) {
+    public static OpenContextBuilder route(String path) {
         return route(Uri.parse(path));
     }
 
-    public static Builder route(Uri uri) {
-        return new Builder(uri);
+    public static OpenContextBuilder route(Uri uri) {
+        return new OpenContextBuilder(uri);
     }
 
-    public static class Builder {
+    public static class OpenContextBuilder {
         private android.content.Context context;
         private Uri uri;
         private Data ctxData;
         private Bundle reqData;
 
-        Builder(Uri uri) {
+        OpenContextBuilder(Uri uri) {
             this.uri = uri;
         }
 
-        public Builder withContext(android.content.Context context) {
+        public OpenContextBuilder withContext(android.content.Context context) {
             this.context = context;
             return this;
         }
 
-        public Builder withCtxData(Data ctxData) {
+        public OpenContextBuilder withCtxData(Data ctxData) {
             if (ctxData != null) {
                 if (this.ctxData == null) {
                     this.ctxData = new Data();
@@ -129,7 +129,7 @@ public final class URIRouters {
             return this;
         }
 
-        public Builder withReqData(Bundle reqData) {
+        public OpenContextBuilder withReqData(Bundle reqData) {
             if (reqData != null) {
                 if (this.reqData == null) {
                     this.reqData = new Bundle();
