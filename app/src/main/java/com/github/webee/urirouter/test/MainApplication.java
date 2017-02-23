@@ -6,14 +6,15 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
-import com.github.webee.urirouter.core.RouteContext;
 import com.github.webee.urirouter.core.Data;
 import com.github.webee.urirouter.core.Handler;
 import com.github.webee.urirouter.core.Middleware;
+import com.github.webee.urirouter.core.RouteContext;
 import com.github.webee.urirouter.core.Router;
 import com.github.webee.urirouter.core.URIRouters;
 import com.github.webee.urirouter.handlers.ActivityHandler;
 import com.github.webee.urirouter.middlewares.CtxDataProcessor;
+import com.github.webee.urirouter.middlewares.FlattenParamsMiddleware;
 import com.github.webee.urirouter.middlewares.LogMiddleware;
 import com.github.webee.urirouter.middlewares.LoginMiddleware;
 import com.github.webee.urirouter.middlewares.PathParamsMiddleware;
@@ -65,7 +66,7 @@ public class MainApplication extends Application {
 
         root.add("/", ActivityHandler.create(MainActivity.class));
         root.add("/login/", ActivityHandler.create(LoginActivity.class));
-        root.add("/xxxx/*", ActivityHandler.create(NotImplementedActivity.class));
+        root.add("/todo/*", ActivityHandler.create(NotImplementedActivity.class));
 
         // user router.
         Router userRouter = root.mount("/user");
@@ -83,15 +84,22 @@ public class MainApplication extends Application {
         userRouter.add("/*", ActivityHandler.create(TestActivity.class));
 
         // test router.
-        Router testRouter = root.mount("/test", true);
-        testRouter.use(new LogMiddleware());
+        Router testRouter = root.mount("/test");
         testRouter.add("/", ActivityHandler.create(TestActivity.class));
         testRouter.add("/result/", ActivityHandler.create(ResultActivity.class), loginMiddleware);
+        testRouter.add("/params/:name/:uid@int/:adult@bool/", ActivityHandler.create(TestActivity.class),
+                new FlattenParamsMiddleware("adult=>isAdult", "tall=>height"));
         testRouter.add("/hello", new Handler() {
             @Override
             public void handle(RouteContext ctx) {
                 Toast.makeText(ctx.context, "Hello", Toast.LENGTH_SHORT).show();
             }
         });
+
+        // xxx router.
+        // xxx router is autonomy, which means it does not inherit middlewares.
+        Router xxxRouter = root.mount("/xxx", true);
+        xxxRouter.use(new LogMiddleware());
+        xxxRouter.add("/test", ActivityHandler.create(TestActivity.class));
     }
 }

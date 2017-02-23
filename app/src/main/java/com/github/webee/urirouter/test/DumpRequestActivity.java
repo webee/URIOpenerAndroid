@@ -11,6 +11,10 @@ import com.github.webee.urirouter.core.Request;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.github.webee.urirouter.core.Request.EXTRA_PATH_PARAMS;
+import static com.github.webee.urirouter.core.Request.EXTRA_QUERY_PARAMS;
+import static com.github.webee.urirouter.core.Request.EXTRA_URI;
+
 public class DumpRequestActivity extends AppCompatActivity {
     @BindView(R.id.info)
     TextView info;
@@ -22,28 +26,47 @@ public class DumpRequestActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         Intent intent = getIntent();
-        Uri uri = intent.getParcelableExtra(Request.EXTRA_URI);
+        Uri uri = intent.getParcelableExtra(EXTRA_URI);
         Bundle pathParams = intent.getBundleExtra(Request.EXTRA_PATH_PARAMS);
         Bundle queryParams = intent.getBundleExtra(Request.EXTRA_QUERY_PARAMS);
 
-        info.setText(getClass().getName());
-        info.append("\n\n");
-        info.append(String.format("uri => %s\n\n", uri.toString()));
+        info.setText(getClass().getName() + "\n");
+
+        info.append("\n");
+        info.append(String.format("uri => %s\n", uri.toString()));
 
         // path params
+        info.append("\n");
+        info.append("Path Parameters:\n");
         if (pathParams != null) {
             for (String key : pathParams.keySet()) {
                 Object val = pathParams.get(key);
-                info.append(String.format("path: %s -> %s(%s)\n\n", key, val, val.getClass().getName()));
+                info.append(String.format("path: %s -> %s(%s)\n", key, val, val.getClass().getName()));
             }
         }
 
         // query params
+        info.append("\n");
+        info.append("Query Parameters:\n");
         if (queryParams != null) {
             for (String key : queryParams.keySet()) {
                 Object val = queryParams.get(key);
-                info.append(String.format("query: %s -> %s(%s)\n\n", key, val, val.getClass().getName()));
+                info.append(String.format("query: %s -> %s(%s)\n", key, val, val.getClass().getName()));
             }
+        }
+
+        // extras
+        info.append("\n");
+        info.append("Extras:\n");
+        Bundle extras = new Bundle();
+        extras.putAll(intent.getExtras());
+        extras.remove(EXTRA_URI);
+        extras.remove(EXTRA_PATH_PARAMS);
+        extras.remove(EXTRA_QUERY_PARAMS);
+
+        for (String key : extras.keySet()) {
+            Object val = extras.get(key);
+            info.append(String.format("extra: %s -> %s(%s)\n", key, val, val.getClass().getName()));
         }
     }
 }

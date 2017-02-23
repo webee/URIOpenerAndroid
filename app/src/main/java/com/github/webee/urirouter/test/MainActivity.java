@@ -33,11 +33,13 @@ public class MainActivity extends AppCompatActivity {
             "hyperwood:///user/webee/28/",
             "https://hyperwood.com/user/xxx/",
             "hyperwood:///user/xxx/",
-            "hyperwood:///xxxx/a/",
-            "hyperwood:///xxxx/a/b/",
+            "hyperwood:///todo/a/",
+            "hyperwood:///todo/a/b/",
             "/test/hello",
             "/test/result/?__ACTIVITY_REQUEST_CODE=2",
+            "/test/params/webee/4321/true/?tallTdouble=1.75",
             "/login/",
+            "/xxx/test",
     };
 
     @Override
@@ -100,8 +102,6 @@ public class MainActivity extends AppCompatActivity {
 
                 Bundle reqData = new Bundle();
                 reqData.putParcelable(LoginActivity.EXTRA_NEXT, Uri.parse("/"));
-                reqData.putBundle(LoginActivity.EXTRA_NEXT_CTX_DATA,
-                        ActivityHandler.ctxData().withFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT).build().bundle);
                 URIRouters.open(this, "/login/", null, reqData);
                 //finish();
                 return true;

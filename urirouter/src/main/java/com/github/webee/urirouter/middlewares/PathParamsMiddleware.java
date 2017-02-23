@@ -32,12 +32,11 @@ public class PathParamsMiddleware extends ParseParamsMiddleware {
                 Request request = ctx.request;
                 List<Param> pathParams = request.pathParams;
                 if (pathParams.size() > 0) {
-                    Bundle data = request.data;
                     Bundle pathParamsData = new Bundle();
                     for (Param param : pathParams) {
                         ValueParsers.parse(pathParamsData, param.name, TYPE_SEP_REGEX, param.value, parsers);
                     }
-                    data.putBundle(EXTRA_PATH_PARAMS, pathParamsData);
+                    request.data.putBundle(EXTRA_PATH_PARAMS, pathParamsData);
                 }
 
                 next.handle(ctx);

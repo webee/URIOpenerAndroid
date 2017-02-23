@@ -3,10 +3,9 @@ package com.github.webee.urirouter.middlewares;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.github.webee.urirouter.core.RouteContext;
 import com.github.webee.urirouter.core.Handler;
-import com.github.webee.urirouter.core.Param;
 import com.github.webee.urirouter.core.Request;
+import com.github.webee.urirouter.core.RouteContext;
 
 import java.util.List;
 import java.util.Set;
@@ -32,7 +31,6 @@ public class QueryParamsMiddleware extends ParseParamsMiddleware {
             @Override
             public void handling(Handler next, RouteContext ctx) {
                 Request request = ctx.request;
-                List<Param> pathParams = request.pathParams;
                 Uri uri = ctx.request.uri;
                 Set<String> keys = uri.getQueryParameterNames();
                 if (keys.size() > 0) {
