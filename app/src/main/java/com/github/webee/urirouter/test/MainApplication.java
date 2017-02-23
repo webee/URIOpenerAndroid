@@ -7,15 +7,17 @@ import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import com.github.webee.urirouter.core.Context;
+import com.github.webee.urirouter.core.Data;
 import com.github.webee.urirouter.core.Handler;
 import com.github.webee.urirouter.core.Middleware;
 import com.github.webee.urirouter.core.Router;
 import com.github.webee.urirouter.core.URIRouters;
 import com.github.webee.urirouter.handlers.ActivityHandler;
-import com.github.webee.urirouter.middlewares.HandleCtxMiddleware;
+import com.github.webee.urirouter.middlewares.CtxDataProcessor;
 import com.github.webee.urirouter.middlewares.LogMiddleware;
 import com.github.webee.urirouter.middlewares.LoginMiddleware;
 import com.github.webee.urirouter.middlewares.PathParamsMiddleware;
+import com.github.webee.urirouter.middlewares.ProcessCtxDataMiddleware;
 import com.github.webee.urirouter.middlewares.QueryParamsMiddleware;
 import com.github.webee.urirouter.openers.BrowserOpener;
 import com.github.webee.urirouter.openers.LogOpener;
@@ -36,7 +38,7 @@ public class MainApplication extends Application {
         URIRouters.insertOpener(new LogOpener(),
                 // FIXME:
                 // 为了在app内部使用URIRouters打开任意链接
-                // 不匹配的将使用ACTION_VIEW打开
+                // 除了从外部进入的请求, 其它不匹配的将使用ACTION_VIEW打开
                 new SchemeHostFilterOpener("",
                         "hyperwood:///", "http://hyperwood.com", "https://hyperwood.com")
                 );
@@ -50,10 +52,10 @@ public class MainApplication extends Application {
         root.use(new LogMiddleware(),
                 new PathParamsMiddleware(),
                 new QueryParamsMiddleware(),
-                new HandleCtxMiddleware(new Handler() {
+                new ProcessCtxDataMiddleware(new CtxDataProcessor() {
                     @Override
-                    public void handle(Context ctx) {
-                        ctx.setData(ActivityHandler.ctxData(ctx.data).withFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT).build());
+                    public Data process(Data data) {
+                        return ActivityHandler.ctxData(data).withFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT).build();
                     }
                 }));
 

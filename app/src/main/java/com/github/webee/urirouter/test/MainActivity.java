@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
             "hyperwood:///xxxx/a/",
             "hyperwood:///xxxx/a/b/",
             "/test/hello",
-            "/test/result/",
+            "/test/result/?__REQUEST_CODE=2",
             "/login/",
     };
 
@@ -55,7 +55,10 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Uri uri = Uri.parse(((TextView) v).getText().toString());
-                    URIRouters.open(MainActivity.this, uri);
+                    URIRouters.open(MainActivity.this, uri,
+                            ActivityHandler.ctxData()
+                                    .withRequestCode(1)
+                                    .build(), null);
                     // OR:
                     /*
                     if (uri.getScheme() == null || uri.getScheme().equals("")) {
