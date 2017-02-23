@@ -12,7 +12,7 @@ import com.github.webee.urirouter.handlers.ActivityHandler;
 
 public class ExtractActivityRequestCodeOpenCtxProcessor implements OpenContextProcessor {
     @Override
-    public void process(OpenContext ctx) {
+    public OpenContext process(OpenContext ctx) {
         Uri uri = ctx.uri;
         if (uri != null) {
             try {
@@ -25,5 +25,6 @@ public class ExtractActivityRequestCodeOpenCtxProcessor implements OpenContextPr
                 r.printStackTrace();
             }
         }
+        return ctx;
     }
 }

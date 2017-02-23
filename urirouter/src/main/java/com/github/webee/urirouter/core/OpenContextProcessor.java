@@ -5,5 +5,5 @@ package com.github.webee.urirouter.core;
  */
 
 public interface OpenContextProcessor {
-    void process(OpenContext ctx);
+    OpenContext process(OpenContext ctx);
 }

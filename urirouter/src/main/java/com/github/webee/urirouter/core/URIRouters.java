@@ -75,7 +75,7 @@ public final class URIRouters {
     public static boolean open(OpenContext ctx) {
         // 1. 处理open context
         for (OpenContextProcessor processor : openCtxProcessors) {
-            processor.process(ctx);
+            ctx = processor.process(ctx);
         }
 
         // 1.1 如果没有平台上下文，使用application
