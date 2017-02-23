@@ -55,10 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Uri uri = Uri.parse(((TextView) v).getText().toString());
-                    URIRouters.open(MainActivity.this, uri,
-                            ActivityHandler.ctxData()
-                                    .withRequestCode(1)
-                                    .build(), null);
+                    URIRouters.open(MainActivity.this, uri);
                     // OR:
                     /*
                     if (uri.getScheme() == null || uri.getScheme().equals("")) {

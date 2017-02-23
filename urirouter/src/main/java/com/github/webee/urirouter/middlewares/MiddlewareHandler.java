@@ -1,6 +1,6 @@
 package com.github.webee.urirouter.middlewares;
 
-import com.github.webee.urirouter.core.Context;
+import com.github.webee.urirouter.core.RouteContext;
 import com.github.webee.urirouter.core.Handler;
 import com.github.webee.urirouter.core.Middleware;
 
@@ -17,10 +17,10 @@ public abstract class MiddlewareHandler implements Handler {
         this.handler = handler;
     }
 
-    public abstract void handling(Handler next, Context ctx);
+    public abstract void handling(Handler next, RouteContext ctx);
 
     @Override
-    public void handle(Context ctx) {
+    public void handle(RouteContext ctx) {
         handling(handler, ctx);
     }
 

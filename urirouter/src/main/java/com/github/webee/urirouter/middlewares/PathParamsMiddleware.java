@@ -2,7 +2,7 @@ package com.github.webee.urirouter.middlewares;
 
 import android.os.Bundle;
 
-import com.github.webee.urirouter.core.Context;
+import com.github.webee.urirouter.core.RouteContext;
 import com.github.webee.urirouter.core.Handler;
 import com.github.webee.urirouter.core.Param;
 import com.github.webee.urirouter.core.Request;
@@ -28,7 +28,7 @@ public class PathParamsMiddleware extends ParseParamsMiddleware {
     public Handler process(final Handler next) {
         return new MiddlewareHandler(this, next) {
             @Override
-            public void handling(Handler next, Context ctx) {
+            public void handling(Handler next, RouteContext ctx) {
                 Request request = ctx.request;
                 List<Param> pathParams = request.pathParams;
                 if (pathParams.size() > 0) {

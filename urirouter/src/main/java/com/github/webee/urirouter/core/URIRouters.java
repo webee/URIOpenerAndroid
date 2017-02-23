@@ -18,7 +18,7 @@ public final class URIRouters {
 
     static {
         // openers
-        appendOpener(new DefaultOpener());
+        appendOpener(new RouteOpener());
     }
 
     public static void init(Application app) {

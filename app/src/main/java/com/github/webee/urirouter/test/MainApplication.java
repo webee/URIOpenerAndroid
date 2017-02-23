@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
-import com.github.webee.urirouter.core.Context;
+import com.github.webee.urirouter.core.RouteContext;
 import com.github.webee.urirouter.core.Data;
 import com.github.webee.urirouter.core.Handler;
 import com.github.webee.urirouter.core.Middleware;
@@ -85,7 +85,7 @@ public class MainApplication extends Application {
         testRouter.add("/result/", ActivityHandler.create(ResultActivity.class), loginMiddleware);
         testRouter.add("/hello", new Handler() {
             @Override
-            public void handle(Context ctx) {
+            public void handle(RouteContext ctx) {
                 Toast.makeText(ctx.context, "Hello", Toast.LENGTH_SHORT).show();
             }
         });

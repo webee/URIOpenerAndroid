@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.github.webee.urirouter.core.Context;
+import com.github.webee.urirouter.core.RouteContext;
 import com.github.webee.urirouter.core.Data;
 import com.github.webee.urirouter.core.Handler;
 import com.github.webee.urirouter.core.Param;
@@ -60,7 +60,7 @@ public class ActivityHandler implements Handler {
     }
 
     @Override
-    public void handle(Context ctx) {
+    public void handle(RouteContext ctx) {
         android.content.Context context = ctx.context;
         Intent intent = new Intent(context, cls);
 

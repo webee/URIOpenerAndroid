@@ -1,6 +1,6 @@
 package com.github.webee.urirouter.middlewares;
 
-import com.github.webee.urirouter.core.Context;
+import com.github.webee.urirouter.core.RouteContext;
 import com.github.webee.urirouter.core.Handler;
 import com.github.webee.urirouter.core.Middleware;
 
@@ -19,7 +19,7 @@ public class ProcessCtxDataMiddleware implements Middleware {
     public Handler process(final Handler next) {
         return new MiddlewareHandler(this, next) {
             @Override
-            public void handling(Handler next, Context ctx) {
+            public void handling(Handler next, RouteContext ctx) {
                 if (processor != null) {
                     ctx.setData(processor.process(ctx.data));
                 }

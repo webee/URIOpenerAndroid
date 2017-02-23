@@ -4,7 +4,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.github.webee.urirouter.core.Context;
+import com.github.webee.urirouter.core.RouteContext;
 import com.github.webee.urirouter.core.Handler;
 import com.github.webee.urirouter.core.Middleware;
 import com.github.webee.urirouter.core.URIRouters;
@@ -28,7 +28,7 @@ public class LoginMiddleware implements Middleware {
     public Handler process(final Handler next) {
         return new MiddlewareHandler(this, next) {
             @Override
-            public void handling(Handler next, Context ctx) {
+            public void handling(Handler next, RouteContext ctx) {
                 if (!ctx.request.uri.getPath().equals(loginPath)) {
                     if (!isLoginChecker.check(ctx.context)) {
                         Log.d("LOGIN MID", "not login");

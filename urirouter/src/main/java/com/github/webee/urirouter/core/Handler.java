@@ -5,5 +5,5 @@ package com.github.webee.urirouter.core;
  */
 
 public interface Handler {
-    void handle(Context ctx);
+    void handle(RouteContext ctx);
 }

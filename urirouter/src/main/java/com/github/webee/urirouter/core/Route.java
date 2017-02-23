@@ -1,5 +1,8 @@
 package com.github.webee.urirouter.core;
 
+import android.net.Uri;
+import android.os.Bundle;
+
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,6 +28,20 @@ public class Route {
 
     public void setFinalized() {
         finalized = true;
+    }
+
+    public RouteContext genContext(android.content.Context context, Uri uri, Data ctxData, Bundle reqData) {
+        Request request = new Request(uri, pathParams);
+        if (reqData != null) {
+            request.data.putAll(reqData);
+        }
+
+        RouteContext ctx = new RouteContext(context, request, null);
+        if (ctxData != null) {
+            ctx.data.putAll(ctxData);
+        }
+
+        return ctx;
     }
 
     public Route applyMiddlewares(Middleware... middlewares) {
