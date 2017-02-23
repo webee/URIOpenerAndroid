@@ -33,6 +33,10 @@ public class Router {
         this.autonomy = autonomy;
     }
 
+    public Route find(Uri uri) {
+        return find(uri.getPath());
+    }
+
     public Route find(String path) {
         PathSegments pathSegments = new PathSegments(path);
         return find(pathSegments.segments, pathSegments.isRoot);
@@ -71,8 +75,9 @@ public class Router {
         return route;
     }
 
-    public void use(Middleware ...middlewares) {
+    public Router use(Middleware ...middlewares) {
         this.middlewares.addAll(Arrays.asList(middlewares));
+        return this;
     }
 
     private Handler applyMiddlewares(Handler handler, List<Middleware> middlewares) {
@@ -83,12 +88,16 @@ public class Router {
         return res;
     }
 
-    public void add(String path, Handler handler, Middleware ...middlewares) {
-        PathSegments pathSegments = new PathSegments(path);
-        add(pathSegments.segments, pathSegments.isRoot, handler, middlewares);
+    public Router add(Uri uri, Handler handler, Middleware ...middlewares) {
+        return add(uri.getPath(), handler, middlewares);
     }
 
-    private void add(List<String> segments, boolean isRoot, Handler handler, Middleware ...middlewares) {
+    public Router add(String path, Handler handler, Middleware ...middlewares) {
+        PathSegments pathSegments = new PathSegments(path);
+        return add(pathSegments.segments, pathSegments.isRoot, handler, middlewares);
+    }
+
+    private Router add(List<String> segments, boolean isRoot, Handler handler, Middleware ...middlewares) {
         handler = applyMiddlewares(handler, Arrays.asList(middlewares));
         int size = segments.size();
         if (size == 0 && isRoot) {
@@ -108,6 +117,7 @@ public class Router {
                 router.add(segments.subList(1, size), isRoot, handler);
             }
         }
+        return this;
     }
 
     private Node getNode(String segment, int size) {
@@ -139,16 +149,32 @@ public class Router {
         return node;
     }
 
+    /**
+     * create a autonomy[true/false] router and mount it at path.
+     * @param path the path to mount.
+     * @param autonomy whether the router should be autonomy.
+     * @return the new created router.
+     */
     public Router mount(String path, boolean autonomy) {
         Router router = new Router(autonomy);
         mount(path, router);
         return router;
     }
 
+    /**
+     * create a non-autonomy router and mount it at path.
+     * @param path the path to mount.
+     * @return the new created router.
+     */
     public Router mount(String path) {
         return mount(path, false);
     }
 
+    /**
+     * mount a router at path.
+     * @param path the path to mount at.
+     * @param router the router to mount
+     */
     public void mount(String path, Router router) {
         PathSegments pathSegments = new PathSegments(path);
         mount(pathSegments.segments, router);

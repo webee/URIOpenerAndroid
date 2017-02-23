@@ -4,9 +4,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.github.webee.urirouter.core.RouteContext;
 import com.github.webee.urirouter.core.Handler;
 import com.github.webee.urirouter.core.Middleware;
+import com.github.webee.urirouter.core.Route;
+import com.github.webee.urirouter.core.RouteContext;
+import com.github.webee.urirouter.core.Router;
 import com.github.webee.urirouter.core.URIRouters;
 import com.github.webee.urirouter.handlers.ActivityHandler;
 import com.github.webee.urirouter.handlers.ArbitrationProxyActivity;
@@ -16,11 +18,19 @@ import com.github.webee.urirouter.handlers.ArbitrationProxyActivity;
  */
 
 public class LoginMiddleware implements Middleware {
-    private String loginPath;
+    private static final Handler LOGIN_HANDLER = new Handler() {
+        @Override
+        public void handle(RouteContext ctx) {
+        }
+    };
+
+    private Uri loginUri;
+    private Router loginRouter;
     private IsLoginChecker isLoginChecker;
 
     public LoginMiddleware(String loginPath, IsLoginChecker isLoginChecker) {
-        this.loginPath = loginPath;
+        this.loginUri = Uri.parse(loginPath);
+        this.loginRouter = new Router().add(loginUri, LOGIN_HANDLER);
         this.isLoginChecker = isLoginChecker;
     }
 
@@ -29,7 +39,9 @@ public class LoginMiddleware implements Middleware {
         return new MiddlewareHandler(this, next) {
             @Override
             public void handling(Handler next, RouteContext ctx) {
-                if (!ctx.request.uri.getPath().equals(loginPath)) {
+                Route route = loginRouter.find(ctx.request.uri);
+                if (!(route != null && route.handler == LOGIN_HANDLER)) {
+                    // 不是登录页面
                     if (!isLoginChecker.check(ctx.context)) {
                         Log.d("LOGIN MID", "not login");
                         // 跳转到登录
@@ -38,7 +50,7 @@ public class LoginMiddleware implements Middleware {
                         data.putBundle(ArbitrationProxyActivity.EXTRA_TARGET_CTX_DATA, ctx.data.bundle);
                         data.putBundle(ArbitrationProxyActivity.EXTRA_TARGET_REQ_DATA, ctx.request.data);
 
-                        data.putParcelable(ArbitrationProxyActivity.EXTRA_ARBITRATOR, Uri.parse(loginPath));
+                        data.putParcelable(ArbitrationProxyActivity.EXTRA_ARBITRATOR, loginUri);
 
                         URIRouters.route(ActivityHandler.ARBITRATION_PROXY_PATH)
                                 .withContext(ctx.context)
@@ -60,7 +72,7 @@ public class LoginMiddleware implements Middleware {
     @Override
     public String toString() {
         return getClass().getName() + "{" +
-                "loginPath='" + loginPath + '\'' +
+                "loginUri='" + loginUri + '\'' +
                 '}';
     }
 }
