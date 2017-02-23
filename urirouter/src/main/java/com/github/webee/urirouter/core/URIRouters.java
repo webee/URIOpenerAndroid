@@ -62,13 +62,17 @@ public final class URIRouters {
     }
 
     public static boolean open(android.content.Context context, Uri uri, Data ctxData, Bundle reqData) {
-        if (context == null) {
-            context = app;
+        return open(new OpenContext(context, uri, ctxData, reqData));
+    }
+
+    public static boolean open(OpenContext ctx) {
+        if (ctx.context == null) {
+            ctx.setContext(app);
         }
 
         for (Opener opener : openers) {
             try {
-                if (opener.open(context, uri, ctxData, reqData)) {
+                if (opener.open(ctx)) {
                     return true;
                 }
             } catch (Throwable r) {
@@ -122,7 +126,7 @@ public final class URIRouters {
         }
 
         public boolean open() {
-            return URIRouters.open(context, uri, ctxData, reqData);
+            return URIRouters.open(new OpenContext(context, uri, ctxData, reqData));
         }
     }
 }

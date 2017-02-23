@@ -1,11 +1,8 @@
 package com.github.webee.urirouter.openers;
 
-import android.content.Context;
-import android.net.Uri;
-import android.os.Bundle;
 import android.util.Log;
 
-import com.github.webee.urirouter.core.Data;
+import com.github.webee.urirouter.core.OpenContext;
 import com.github.webee.urirouter.core.Opener;
 
 /**
@@ -16,12 +13,12 @@ public class LogOpener implements Opener {
     public static final String TAG = "OPENER.LOG";
 
     @Override
-    public boolean open(Context context, Uri uri, Data ctxData, Bundle reqData) {
+    public boolean open(OpenContext ctx) {
         Log.d(TAG, String.format("START: %d", System.currentTimeMillis()));
-        Log.d(TAG, String.format("context: %s", context));
-        Log.d(TAG, String.format("uri: %s", uri));
-        Log.d(TAG, String.format("ctxData: %s", ctxData));
-        Log.d(TAG, String.format("reqData: %s", reqData));
+        Log.d(TAG, String.format("context: %s", ctx.context));
+        Log.d(TAG, String.format("uri: %s", ctx.uri));
+        Log.d(TAG, String.format("ctxData: %s", ctx.ctxData));
+        Log.d(TAG, String.format("reqData: %s", ctx.reqData));
         Log.d(TAG, "...");
         return false;
     }

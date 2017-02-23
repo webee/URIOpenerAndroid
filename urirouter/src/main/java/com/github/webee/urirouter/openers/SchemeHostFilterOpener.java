@@ -1,11 +1,9 @@
 package com.github.webee.urirouter.openers;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 
-import com.github.webee.urirouter.core.Data;
+import com.github.webee.urirouter.core.OpenContext;
 import com.github.webee.urirouter.core.Opener;
 import com.github.webee.urirouter.handlers.RouterActivity;
 
@@ -19,8 +17,8 @@ import java.util.Set;
 public class SchemeHostFilterOpener implements Opener {
     private Set<Uri> allowedUriSchemes = new HashSet<>();
 
-    public SchemeHostFilterOpener(String ...pathes) {
-        for (String path : pathes) {
+    public SchemeHostFilterOpener(String ...paths) {
+        for (String path : paths) {
             Uri uri = Uri.parse(path);
             allowedUriSchemes.add(uri);
         }
@@ -46,18 +44,18 @@ public class SchemeHostFilterOpener implements Opener {
     }
 
     @Override
-    public boolean open(Context context, Uri uri, Data ctxData, Bundle reqData) {
-        if (RouterActivity.isFromExternal(ctxData)) {
+    public boolean open(OpenContext ctx) {
+        if (RouterActivity.isFromExternal(ctx.ctxData)) {
             // 来自外部的链接肯定是可以处理的，不需要过滤
             return false;
         }
 
-        if (!isAllowed(uri.getScheme(), uri.getHost())) {
-            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            if (reqData != null) {
-                intent.putExtras(reqData);
+        if (!isAllowed(ctx.uri.getScheme(), ctx.uri.getHost())) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, ctx.uri);
+            if (ctx.reqData != null) {
+                intent.putExtras(ctx.reqData);
             }
-            context.startActivity(intent);
+            ctx.context.startActivity(intent);
             return true;
         }
         return false;
