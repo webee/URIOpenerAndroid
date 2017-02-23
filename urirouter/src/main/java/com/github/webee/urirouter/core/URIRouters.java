@@ -13,6 +13,7 @@ import java.util.List;
 
 public final class URIRouters {
     private static Application app;
+    public static final List<OpenContextProcessor> openCtxProcessors = new LinkedList<>();
     public static final List<Opener> openers = new LinkedList<>();
     public static final Router root = new Router();
 
@@ -23,6 +24,12 @@ public final class URIRouters {
 
     public static void init(Application app) {
         URIRouters.app = app;
+    }
+
+    public static void addContetProcessor(OpenContextProcessor ...processors) {
+        for (int i = 0; i < processors.length; i++) {
+            openCtxProcessors.add(processors[i]);
+        }
     }
 
     public static void insertOpener(Opener... newOpeners) {
@@ -66,10 +73,17 @@ public final class URIRouters {
     }
 
     public static boolean open(OpenContext ctx) {
+        // 1. 处理open context
+        for (OpenContextProcessor processor : openCtxProcessors) {
+            processor.process(ctx);
+        }
+
+        // 1.1 如果没有平台上下文，使用application
         if (ctx.context == null) {
             ctx.setContext(app);
         }
 
+        // 2. 尝试使用打开器处理请求
         for (Opener opener : openers) {
             try {
                 if (opener.open(ctx)) {

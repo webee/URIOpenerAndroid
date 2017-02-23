@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
             "hyperwood:///xxxx/a/",
             "hyperwood:///xxxx/a/b/",
             "/test/hello",
-            "/test/result/?__REQUEST_CODE=2",
+            "/test/result/?__ACTIVITY_REQUEST_CODE=2",
             "/login/",
     };
 

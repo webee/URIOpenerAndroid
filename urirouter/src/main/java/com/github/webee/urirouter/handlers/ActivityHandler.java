@@ -22,6 +22,7 @@ import static com.github.webee.urirouter.core.Request.EXTRA_URI;
  */
 
 public class ActivityHandler implements Handler {
+    public static final String QUERY_PARAM_NAME_ACTIVITY_REQUEST_CODE = "__ACTIVITY_REQUEST_CODE";
     public static final String PROXY_PATH = ActivityHandler.class.getName() + ".proxy";
     public static final String DATA_OPTIONS = ActivityHandler.class.getName() + ".options";
     public static final String DATA_REQUEST_CODE = ActivityHandler.class.getName() + ".request_code";

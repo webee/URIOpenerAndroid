@@ -19,6 +19,7 @@ import com.github.webee.urirouter.middlewares.LoginMiddleware;
 import com.github.webee.urirouter.middlewares.PathParamsMiddleware;
 import com.github.webee.urirouter.middlewares.ProcessCtxDataMiddleware;
 import com.github.webee.urirouter.middlewares.QueryParamsMiddleware;
+import com.github.webee.urirouter.openctxprocessors.ExtractActivityRequestCodeOpenCtxProcessor;
 import com.github.webee.urirouter.openers.BrowserOpener;
 import com.github.webee.urirouter.openers.LogOpener;
 import com.github.webee.urirouter.openers.SchemeHostFilterOpener;
@@ -34,6 +35,9 @@ public class MainApplication extends Application {
         super.onCreate();
 
         URIRouters.init(this);
+        // 设置open context processors.
+        URIRouters.addContetProcessor(new ExtractActivityRequestCodeOpenCtxProcessor());
+
         // 设置openers
         URIRouters.insertOpener(new LogOpener(),
                 // FIXME:
