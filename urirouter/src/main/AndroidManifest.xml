@@ -7,7 +7,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true">
         <activity android:name="com.github.webee.urirouter.handlers.RouterActivity" />
-        <activity android:name="com.github.webee.urirouter.handlers.ProxyActivity"></activity>
+        <activity android:name="com.github.webee.urirouter.handlers.ArbitrationProxyActivity"></activity>
     </application>
 
 </manifest>

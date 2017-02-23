@@ -9,15 +9,14 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.github.webee.urirouter.core.Data;
 import com.github.webee.urirouter.core.URIRouters;
-import com.github.webee.urirouter.handlers.ProxyActivity;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class LoginActivity extends AppCompatActivity {
-    public static final String EXTRA_NEXT = ProxyActivity.class.getName() + ".next";
-    public static final String EXTRA_NEXT_CTX_DATA = ProxyActivity.class.getName() + ".next_ctx_data";
-    public static final String EXTRA_NEXT_REQ_DATA = ProxyActivity.class.getName() + ".next_req_data";
+    public static final String EXTRA_NEXT = LoginActivity.class.getName() + ".next";
+    public static final String EXTRA_NEXT_CTX_DATA = LoginActivity.class.getName() + ".next_ctx_data";
+    public static final String EXTRA_NEXT_REQ_DATA = LoginActivity.class.getName() + ".next_req_data";
 
     public static final String KEY_IS_LOGIN = "is_login";
 

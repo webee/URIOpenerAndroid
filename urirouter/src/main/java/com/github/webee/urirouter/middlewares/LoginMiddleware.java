@@ -9,7 +9,7 @@ import com.github.webee.urirouter.core.Handler;
 import com.github.webee.urirouter.core.Middleware;
 import com.github.webee.urirouter.core.URIRouters;
 import com.github.webee.urirouter.handlers.ActivityHandler;
-import com.github.webee.urirouter.handlers.ProxyActivity;
+import com.github.webee.urirouter.handlers.ArbitrationProxyActivity;
 
 /**
  * Created by webee on 17/2/20.
@@ -34,13 +34,13 @@ public class LoginMiddleware implements Middleware {
                         Log.d("LOGIN MID", "not login");
                         // 跳转到登录
                         Bundle data = new Bundle();
-                        data.putParcelable(ProxyActivity.EXTRA_REFERRER, ctx.request.uri);
-                        data.putBundle(ProxyActivity.EXTRA_REFERRER_CTX_DATA, ctx.data.bundle);
-                        data.putBundle(ProxyActivity.EXTRA_REFERRER_REQ_DATA, ctx.request.data);
+                        data.putParcelable(ArbitrationProxyActivity.EXTRA_TARGET, ctx.request.uri);
+                        data.putBundle(ArbitrationProxyActivity.EXTRA_TARGET_CTX_DATA, ctx.data.bundle);
+                        data.putBundle(ArbitrationProxyActivity.EXTRA_TARGET_REQ_DATA, ctx.request.data);
 
-                        data.putParcelable(ProxyActivity.EXTRA_TARGET, Uri.parse(loginPath));
+                        data.putParcelable(ArbitrationProxyActivity.EXTRA_ARBITRATOR, Uri.parse(loginPath));
 
-                        URIRouters.route(ActivityHandler.PROXY_PATH)
+                        URIRouters.route(ActivityHandler.ARBITRATION_PROXY_PATH)
                                 .withContext(ctx.context)
                                 .withCtxData(ctx.data)
                                 .withReqData(data)
