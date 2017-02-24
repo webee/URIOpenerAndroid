@@ -4,6 +4,8 @@ import android.app.Application;
 import android.net.Uri;
 import android.os.Bundle;
 
+import com.github.webee.uriopener.openctxprocessors.UseAppContextOpenCtxProcessor;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,6 +20,7 @@ public final class URIOpeners {
 
     public static void init(Application app) {
         URIOpeners.app = app;
+        addContextProcessor(new UseAppContextOpenCtxProcessor(app));
     }
 
     public static void addContextProcessor(OpenContextProcessor ...processors) {
@@ -70,11 +73,6 @@ public final class URIOpeners {
         // 1. 处理open context
         for (OpenContextProcessor processor : openCtxProcessors) {
             ctx = processor.process(ctx);
-        }
-
-        // 1.1 如果没有平台上下文，使用application
-        if (ctx.context == null) {
-            ctx.setContext(app);
         }
 
         // 2. 尝试使用打开器处理请求

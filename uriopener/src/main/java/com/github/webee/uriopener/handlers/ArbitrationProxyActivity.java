@@ -18,7 +18,7 @@ public class ArbitrationProxyActivity extends Activity {
     public static final String EXTRA_ARBITRATOR_REQ_DATA = "arbitrator_req_data";
 
     private static final int ARBITRATOR_REQ_CODE = 319;
-    private static final int TARGET_REQ_CODE = 320;
+    private int TARGET_REQ_CODE = -1;
 
     // target
     private Uri target;
@@ -33,6 +33,7 @@ public class ArbitrationProxyActivity extends Activity {
         target = intent.getParcelableExtra(EXTRA_TARGET);
         targetCtxData = new Data(intent.getBundleExtra(EXTRA_TARGET_CTX_DATA));
         targetReqData = intent.getBundleExtra(EXTRA_TARGET_REQ_DATA);
+        TARGET_REQ_CODE = ActivityHandler.tryGetRequestCode(targetCtxData);
 
         Uri arbitrator = intent.getParcelableExtra(EXTRA_ARBITRATOR);
         Data arbitratorCtxData = new Data(intent.getBundleExtra(EXTRA_ARBITRATOR_CTX_DATA));
@@ -50,25 +51,17 @@ public class ArbitrationProxyActivity extends Activity {
         if (requestCode == ARBITRATOR_REQ_CODE) {
             if (ActivityHandler.isRequestForResult(targetCtxData)) {
                 if (resultCode == RESULT_OK) {
-                    URIOpeners.route(target)
-                            .withContext(this)
-                            .withCtxData(targetCtxData)
-                            .withCtxData(ActivityHandler.ctxData().withRequestCode(TARGET_REQ_CODE).build())
-                            .withReqData(targetReqData)
-                            .open();
-                } else {
-                    setResult(resultCode, data);
-                    finish();
-                }
-            } else {
-                if (resultCode == RESULT_OK) {
                     URIOpeners.open(this, target, targetCtxData, targetReqData);
+                    // waiting for result
+                    return;
                 }
-                finish();
+                setResult(resultCode, data);
+            } else if (resultCode == RESULT_OK) {
+                URIOpeners.open(this, target, targetCtxData, targetReqData);
             }
         } else if (requestCode == TARGET_REQ_CODE) {
             setResult(resultCode, data);
-            finish();
         }
+        finish();
     }
 }

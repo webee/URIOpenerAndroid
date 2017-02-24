@@ -15,13 +15,13 @@ import com.github.webee.uriopener.core.Router;
 import com.github.webee.uriopener.core.URIOpeners;
 import com.github.webee.uriopener.handlers.ActivityHandler;
 import com.github.webee.uriopener.middlewares.CtxDataProcessor;
+import com.github.webee.uriopener.middlewares.ExtractActivityRequestCodeMiddleware;
 import com.github.webee.uriopener.middlewares.FlattenParamsMiddleware;
 import com.github.webee.uriopener.middlewares.LogMiddleware;
 import com.github.webee.uriopener.middlewares.LoginMiddleware;
 import com.github.webee.uriopener.middlewares.PathParamsMiddleware;
 import com.github.webee.uriopener.middlewares.ProcessCtxDataMiddleware;
 import com.github.webee.uriopener.middlewares.QueryParamsMiddleware;
-import com.github.webee.uriopener.openctxprocessors.ExtractActivityRequestCodeOpenCtxProcessor;
 import com.github.webee.uriopener.openers.BrowserOpener;
 import com.github.webee.uriopener.openers.LogOpener;
 import com.github.webee.uriopener.openers.SchemeHostFilterOpener;
@@ -37,9 +37,6 @@ public class MainApplication extends Application {
         super.onCreate();
 
         URIOpeners.init(this);
-        // 设置open context processors.
-        URIOpeners.addContextProcessor(new ExtractActivityRequestCodeOpenCtxProcessor());
-
         // 设置openers
         URIOpeners.appendOpener(new LogOpener(),
                 // FIXME:
@@ -61,6 +58,7 @@ public class MainApplication extends Application {
         ActivityHandler.initRoutes(root);
         // 设置路由和路由中间件
         root.use(new LogMiddleware(),
+                new ExtractActivityRequestCodeMiddleware(),
                 new PathParamsMiddleware(),
                 new QueryParamsMiddleware(),
                 new ProcessCtxDataMiddleware(new CtxDataProcessor() {

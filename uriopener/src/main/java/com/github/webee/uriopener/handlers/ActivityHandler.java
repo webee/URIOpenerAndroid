@@ -95,6 +95,13 @@ public class ActivityHandler implements Handler {
         return ctxData.containsKey(DATA_REQUEST_CODE);
     }
 
+    public static int tryGetRequestCode(Data ctxData) {
+        if (ctxData.containsKey(DATA_REQUEST_CODE)) {
+            return ctxData.get(DATA_REQUEST_CODE);
+        }
+        return -1;
+    }
+
     public static class CtxDataBuilder {
         Data data = null;
 
