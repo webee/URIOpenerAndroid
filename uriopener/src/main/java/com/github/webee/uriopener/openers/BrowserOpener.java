@@ -33,8 +33,9 @@ public class BrowserOpener implements Opener {
             }
             ResolveInfo defaultResolution = ctx.context.getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
 
+            String defaultPackageName = defaultResolution.activityInfo.packageName;
             // If this app is the default app for entry URLs, use the browser instead
-            if (defaultResolution.activityInfo.packageName.equals(ctx.context.getPackageName())) {
+            if (defaultPackageName.equals(ctx.context.getPackageName()) || defaultPackageName.equals("android")) {
                 Intent browseIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://"));
                 ResolveInfo browseResolution = ctx.context.getPackageManager().resolveActivity(browseIntent,
                         PackageManager.MATCH_DEFAULT_ONLY);
