@@ -1,9 +1,9 @@
-# URIRouterAndroid
-[![Release](https://img.shields.io/github/release/webee/URIRouterAndroid.svg?label=maven version)](https://jitpack.io/#webee/URIRouterAndroid)
+# URIOpenerAndroid
+[![Release](https://img.shields.io/github/release/webee/URIOpenerAndroid.svg?label=maven version)](https://jitpack.io/#webee/URIOpenerAndroid)
 
 android路由组件
 
-[https://jitpack.io/#webee/URIRouterAndroid](https://jitpack.io/#webee/URIRouterAndroid)
+[https://jitpack.io/#webee/URIOpenerAndroid](https://jitpack.io/#webee/URIOpenerAndroid)
 
 To install the library add:
 
@@ -13,7 +13,7 @@ To install the library add:
         maven { url "https://jitpack.io" }
    }
    dependencies {
-         compile 'com.github.webee:URIRouterAndroid:v0.4.0'
+         compile 'com.github.webee:URIOpenerAndroid:v1.0.0'
    }
    ```
 
@@ -22,20 +22,25 @@ To install the library add:
 // Application.onCreate
     URIRouters.init(this);
     // 设置openers
-    URIRouters.insertOpener(new LogOpener(),
+    URIRouters.appendOpener(new LogOpener(),
             // FIXME:
             // 为了在app内部使用URIRouters打开任意链接
             // 不匹配的将使用ACTION_VIEW打开
             new SchemeHostFilterOpener("",
                     "hyperwood:///", "http://hyperwood.com", "https://hyperwood.com")
             );
+    // 路由打开器
+    RouteOpener routeOpener = new RouteOpener();
+    URIRouters.appendOpener(routerOpener);
     // 无法打开的web链接使用浏览器打开
     URIRouters.appendOpener(new BrowserOpener());
     // 无法处理的请求
     URIRouters.appendOpener(new MyUnhandledOpener());
 
-    // 设置路由和路由中间件
     Router root = URIRouters.root;
+    // 初始化某些处理器
+    ActivityHandler.initRoutes(root);
+    // 设置路由和路由中间件
     root.use(new LogMiddleware(),
             new PathParamsMiddleware(),
             new QueryParamsMiddleware(),

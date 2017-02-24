@@ -1,8 +1,8 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 
-group='com.github.webee.URIRouterAndroid'
-version='0.4.0'
+group='com.github.webee.URIOpenerAndroid'
+version='1.0.0'
 
 android {
     compileSdkVersion 24
