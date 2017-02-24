@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.github.webee.urirouter.test">
+    package="com.github.webee.uriopener.test">
 
     <application
-        android:name=".MainApplication"
+        android:name="com.github.webee.uriopener.test.MainApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.github.webee.urirouter.handlers.RouterActivity">
+        <activity android:name="com.github.webee.uriopener.handlers.RouterActivity">
 
             <!-- <intent-filter android:autoVerify="true"> -->
             <intent-filter>
@@ -34,19 +34,19 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name="com.github.webee.uriopener.test.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:label="Test" android:name=".TestActivity" />
-        <activity android:label="User" android:name=".UserActivity" />
-        <activity android:label="Login" android:name=".LoginActivity" />
-        <activity android:label="Request Result" android:name=".ResultActivity" />
-        <activity android:label="Request Infos" android:name=".DumpRequestActivity" />
-        <activity android:label="Not Implemented" android:name=".NotImplementedActivity"></activity>
+        <activity android:label="Test" android:name="com.github.webee.uriopener.test.TestActivity" />
+        <activity android:label="User" android:name="com.github.webee.uriopener.test.UserActivity" />
+        <activity android:label="Login" android:name="com.github.webee.uriopener.test.LoginActivity" />
+        <activity android:label="Request Result" android:name="com.github.webee.uriopener.test.ResultActivity" />
+        <activity android:label="Request Infos" android:name="com.github.webee.uriopener.test.DumpRequestActivity" />
+        <activity android:label="Not Implemented" android:name="com.github.webee.uriopener.test.NotImplementedActivity"></activity>
     </application>
 
 </manifest>
