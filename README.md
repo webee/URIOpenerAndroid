@@ -176,11 +176,11 @@ To install the library add:
 ## 其它
 ### 说明
 看过不少app路由的实现，感觉设计都不是特别简洁，增加功能也不足够灵活。URIOpener目的在于实现一个概念清晰、简洁，通用且功能灵活的app组件化工具。
-URIOpener的基本概念就是两个，1.URI代表请求; 2.Opener是处理请求的方法
-自带Opener RouteOpener负责应用内资源的维护和处理, 使用Router建立URI和内部资源的关系，内部资源表示成一个Handler，使用Middleware来加强Handler的功能，使用Middleware来加强Handler的功能。
+URIOpener的功能可以类比Mac OSX系统的open命令, URIOpener的基本概念就是两个，1.URI代表请求; 2.Opener是处理请求的方法
+自带Opener RouteOpener负责应用内资源的维护和处理, 使用Router(文件系统)建立URI(路径)和内部资源(文件)的关系，内部资源表示成一个Handler(文件处理器)，使用Middleware来加强Handler的功能，使用Middleware来加强Handler的功能。
 可以自定义其它Opener处理非应用内资源。
 
-善于使用注解配置路由的考虑，我认为路由本身就是用来集中管理应用资源的，就是一个全局管理器，集中配置是更清晰的；
+关于使用注解配置路由的考虑，我认为路由本身就是用来集中管理应用资源的，就是一个全局管理器，集中配置是更清晰的；
 另外注解配置其实也是一种对业务代码的入侵，如果实现不是由我们控制的, 根本也没法使用注解了。
 
 ### 打开器
