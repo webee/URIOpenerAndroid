@@ -131,7 +131,7 @@ To install the library add:
 
 ## 外部请求入口URI Scheme配置
 ```xml
-  <activity android:name="com.github.webee.urirouter.core.RouterActivity">
+  <activity android:name="com.github.webee.uriopener.core.RouterActivity">
 
       <!-- <intent-filter android:autoVerify="true"> -->
       <intent-filter>
