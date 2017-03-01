@@ -15,8 +15,6 @@ import com.github.webee.uriopener.core.Router;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.github.webee.uriopener.core.Request.EXTRA_URI;
-
 /**
  * Created by webee on 17/2/17.
  */
@@ -68,7 +66,7 @@ public class ActivityHandler implements Handler {
         Bundle options = ctx.data.get(DATA_OPTIONS);
 
         Request request = ctx.request;
-        intent.putExtra(EXTRA_URI, request.uri);
+        intent.setData(request.uri);
         intent.putExtras(request.data);
 
         if (ctx.data.containsKey(DATA_FLAGS)) {

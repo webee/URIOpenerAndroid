@@ -13,7 +13,6 @@ import butterknife.ButterKnife;
 
 import static com.github.webee.uriopener.core.Request.EXTRA_PATH_PARAMS;
 import static com.github.webee.uriopener.core.Request.EXTRA_QUERY_PARAMS;
-import static com.github.webee.uriopener.core.Request.EXTRA_URI;
 
 public class DumpRequestActivity extends AppCompatActivity {
     @BindView(R.id.info)
@@ -26,7 +25,7 @@ public class DumpRequestActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         Intent intent = getIntent();
-        Uri uri = intent.getParcelableExtra(EXTRA_URI);
+        Uri uri = intent.getData();
         Bundle pathParams = intent.getBundleExtra(Request.EXTRA_PATH_PARAMS);
         Bundle queryParams = intent.getBundleExtra(Request.EXTRA_QUERY_PARAMS);
 
@@ -58,7 +57,6 @@ public class DumpRequestActivity extends AppCompatActivity {
         // extras
         Bundle extras = new Bundle();
         extras.putAll(intent.getExtras());
-        extras.remove(EXTRA_URI);
         extras.remove(EXTRA_PATH_PARAMS);
         extras.remove(EXTRA_QUERY_PARAMS);
 
