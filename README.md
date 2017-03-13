@@ -15,7 +15,7 @@ To install the library add:
         maven { url "https://jitpack.io" }
    }
    dependencies {
-         compile 'com.github.webee:URIOpenerAndroid:v1.0.2'
+         compile 'com.github.webee:URIOpenerAndroid:v1.1.0'
    }
    ```
 

@@ -21,7 +21,9 @@ import java.util.Map;
 
 public class ActivityHandler implements Handler {
     public static final String QUERY_PARAM_NAME_ACTIVITY_REQUEST_CODE = "__ACTIVITY_REQUEST_CODE";
-    public static final String ARBITRATION_PROXY_PATH = ActivityHandler.class.getName() + ".arbitration_proxy";
+    public static final String ARBITRATION_PROXY_PATH_PREFIX = ActivityHandler.class.getName();
+    public static final String ARBITRATION_PROXY_NAME = "arbitration_proxy";
+    public static final String ARBITRATION_PROXY_PATH = ARBITRATION_PROXY_PATH_PREFIX + "/" + ARBITRATION_PROXY_NAME;
     public static final String DATA_OPTIONS = ActivityHandler.class.getName() + ".options";
     public static final String DATA_REQUEST_CODE = ActivityHandler.class.getName() + ".request_code";
     public static final String DATA_FLAGS = ActivityHandler.class.getName() + ".flags";
@@ -29,8 +31,9 @@ public class ActivityHandler implements Handler {
     private static final Map<Class<? extends Activity>, Handler> handlers = new HashMap<>();
     private final Class<? extends Activity> cls;
 
-    public static void initRoutes(Router router) {
-        router.add(ARBITRATION_PROXY_PATH, create(ArbitrationProxyActivity.class));
+    public static void initRoutes(Router root) {
+        Router router = root.mount(ARBITRATION_PROXY_PATH_PREFIX, true);
+        router.add(ARBITRATION_PROXY_NAME, create(ArbitrationProxyActivity.class));
     }
 
     public static Handler create(Class<? extends Activity> cls) {
